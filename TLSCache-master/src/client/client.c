@@ -1,20 +1,3 @@
-/*
- * Copyright (c) 2008 Bob Beck <beck@obtuse.com>
- *
- * Permission to use, copy, modify, and distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- */
-
-/* client.c  - the "classic" example of a socket client */
 #include <arpa/inet.h>
 
 #include <netinet/in.h>
@@ -31,7 +14,7 @@
 #include <string.h>
 #include <unistd.h>
 
-
+#include <tls.h>
 
 static void usage()
 {
@@ -48,7 +31,9 @@ int main(int argc, char *argv[])
 	ssize_t r, rc;
 	u_short port;
 	u_long p;
-	int sd;
+	int sd, i;
+	struct tls_config *tls_cfg = NULL;
+	struct tls *tls_ctx = NULL;
 
 	if (argc != 3)
 		usage();
@@ -69,6 +54,14 @@ int main(int argc, char *argv[])
 	/* now safe to do this */
 	port = p;
 
+	/* set up TLS */
+	if (tls_init() == -1)
+		errx(1, "unable to initialize TLS");
+	if ((tls_cfg = tls_config_new()) == NULL)
+		errx(1, "unable to allocate TLS config");
+	if (tls_config_set_ca_file(tls_cfg, "/home/praja002/Teaching/CS165-Security-Spring2020/tlscache/certificates/root.pem") == -1)
+		errx(1, "unable to set root CA file");
+
 	/*
 	 * first set up "server_sa" to be the location of the server
 	 */
@@ -81,14 +74,26 @@ int main(int argc, char *argv[])
 		usage();
 	}
 
-	/* ok now get a socket. we don't care where... */
+	/* ok now get a socket. */
 	if ((sd=socket(AF_INET,SOCK_STREAM,0)) == -1)
 		err(1, "socket failed");
 
 	/* connect the socket to the server described in "server_sa" */
-	if (connect(sd, (struct sockaddr *)&server_sa, sizeof(server_sa))
-	    == -1)
+	if (connect(sd, (struct sockaddr *)&server_sa, sizeof(server_sa)) == -1)
 		err(1, "connect failed");
+
+	if ((tls_ctx = tls_client()) == NULL)
+		errx(1, "tls client creation failed");
+	if (tls_configure(tls_ctx, tls_cfg) == -1)
+		errx(1, "tls configuration failed (%s)", tls_error(tls_ctx));
+	if (tls_connect_socket(tls_ctx, sd, "localhost") == -1)
+		errx(1, "tls connection failed (%s)", tls_error(tls_ctx));
+
+
+	do {
+		if ((i = tls_handshake(tls_ctx)) == -1)
+			errx(1, "tls handshake failed (%s)", tls_error(tls_ctx));
+	} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
 
 	/*
 	 * finally, we are connected. find out what magnificent wisdom
@@ -107,10 +112,11 @@ int main(int argc, char *argv[])
 	rc = 0;
 	maxread = sizeof(buffer) - 1; /* leave room for a 0 byte */
 	while ((r != 0) && rc < maxread) {
-		r = read(sd, buffer + rc, maxread - rc);
-		if (r == -1) {
-			if (errno != EINTR)
-				err(1, "read failed");
+		r = tls_read(tls_ctx, buffer + rc, maxread - rc);
+		if (r == TLS_WANT_POLLIN || r == TLS_WANT_POLLOUT)
+			continue;
+		if (r < 0) {
+			err(1, "tls_read failed (%s)", tls_error(tls_ctx));
 		} else
 			rc += r;
 	}
