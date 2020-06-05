@@ -88,7 +88,7 @@ int main(int argc,  char *argv[])
 	port = p;
 
 	/* the message we send the client */
-	strlcpy(buffer,
+	strncpy(buffer,
 	    "What is the air speed velocity of a coconut laden swallow?\n",
 	    sizeof(buffer));
 
