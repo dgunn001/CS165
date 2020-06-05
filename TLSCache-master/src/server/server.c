@@ -39,6 +39,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include<tls.h>
+
 static void usage()
 {
 	extern char * __progname;
