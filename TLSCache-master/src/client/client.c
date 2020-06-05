@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
 	/*
 	 * first set up "server_sa" to be the location of the server
 	 */
+	printf("setting up server");
 	memset(&server_sa, 0, sizeof(server_sa));
 	server_sa.sin_family = AF_INET;
 	server_sa.sin_port = htons(port);
@@ -112,6 +113,7 @@ int main(int argc, char *argv[])
 	rc = 0;
 	maxread = sizeof(buffer) - 1; /* leave room for a 0 byte */
 	while ((r != 0) && rc < maxread) {
+		printf("reading");
 		r = tls_read(tls_ctx, buffer + rc, maxread - rc);
 		if (r == TLS_WANT_POLLIN || r == TLS_WANT_POLLOUT)
 			continue;
