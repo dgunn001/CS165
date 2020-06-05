@@ -38,6 +38,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+//tls header
+#include<tls.h>
 
 static void usage()
 {
