@@ -64,6 +64,11 @@ int main(int argc,  char *argv[])
 	u_short port;
 	pid_t pid;
 	u_long p;
+	
+	//init tls struct
+	struct tls_config *tls_cfg = NULL;    //TLS config
+ 	struct tls *tls_ctx = NULL; //TLS CONTEXT
+	struct tls *tls_cctx = NULL; //TLS CLIENT CONTEXT
 
 	/*
 	 * first, figure out what port we will listen on - it should
