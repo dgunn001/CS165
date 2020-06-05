@@ -1,30 +1,3 @@
-/*
- * Copyright (c) 2008 Bob Beck <beck@obtuse.com>
- *
- * Permission to use, copy, modify, and distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- */
-
-/* server.c  - the "classic" example of a socket server */
-
-/*
- * compile with gcc -o server server.c
- * or if you are on a crappy version of linux without strlcpy
- * thanks to the bozos who do glibc, do
- * gcc -c strlcpy.c
- * gcc -o server server.c strlcpy.o
- *
- */
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/wait.h>
@@ -38,8 +11,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-//tls header
-#include<tls.h>
+
+#include <tls.h>
 
 static void usage()
 {
@@ -64,11 +37,9 @@ int main(int argc,  char *argv[])
 	u_short port;
 	pid_t pid;
 	u_long p;
-	
-	//init tls struct
-	struct tls_config *tls_cfg = NULL;    //TLS config
- 	struct tls *tls_ctx = NULL; //TLS CONTEXT
-	struct tls *tls_cctx = NULL; //TLS CLIENT CONTEXT
+	struct tls_config *tls_cfg = NULL; // TLS config
+	struct tls *tls_ctx = NULL; // TLS context
+	struct tls *tls_cctx = NULL; // client's TLS context
 
 	/*
 	 * first, figure out what port we will listen on - it should
@@ -94,7 +65,7 @@ int main(int argc,  char *argv[])
 	/* now safe to do this */
 	port = p;
 
-	//setup TLS
+	/* set up TLS */
 	if ((tls_cfg = tls_config_new()) == NULL)
 		errx(1, "unable to allocate TLS config");
 	if (tls_config_set_ca_file(tls_cfg, "/home/csmajs/dgunn001/CS165/TLSCache-master/certificates/root.pem") == -1)
@@ -107,10 +78,10 @@ int main(int argc,  char *argv[])
 		errx(1, "TLS server creation failed");
 	if (tls_configure(tls_ctx, tls_cfg) == -1)
 		errx(1, "TLS configuration failed (%s)", tls_error(tls_ctx));
-	
+
 	/* the message we send the client */
 	strncpy(buffer,
-	    "What is the air speed velocity of a coconut laden swallow?\n",
+	    "It was the best of times, it was the worst of times... \n",
 	    sizeof(buffer));
 
 	memset(&sockname, 0, sizeof(sockname));
@@ -171,7 +142,6 @@ int main(int argc,  char *argv[])
 
 		if(pid == 0) {
 			ssize_t written, w;
-			//add socket and handshake
 			i = 0;
 			if (tls_accept_socket(tls_ctx, &tls_cctx, clientsd) == -1)
 				errx(1, "tls accept failed (%s)", tls_error(tls_ctx));
@@ -181,6 +151,7 @@ int main(int argc,  char *argv[])
 						errx(1, "tls handshake failed (%s)", tls_error(tls_ctx));
 				} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
 			}
+
 			/*
 			 * write the message to the client, being sure to
 			 * handle a short write, or being interrupted by
