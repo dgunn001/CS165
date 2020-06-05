@@ -1,3 +1,30 @@
+/*
+ * Copyright (c) 2008 Bob Beck <beck@obtuse.com>
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+/* server.c  - the "classic" example of a socket server */
+
+/*
+ * compile with gcc -o server server.c
+ * or if you are on a crappy version of linux without strlcpy
+ * thanks to the bozos who do glibc, do
+ * gcc -c strlcpy.c
+ * gcc -o server server.c strlcpy.o
+ *
+ */
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/wait.h>
@@ -11,8 +38,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-#include <tls.h>
 
 static void usage()
 {
@@ -32,14 +57,11 @@ int main(int argc,  char *argv[])
 	struct sockaddr_in sockname, client;
 	char buffer[80], *ep;
 	struct sigaction sa;
-	int sd, i;
+	int sd;
 	socklen_t clientlen;
 	u_short port;
 	pid_t pid;
 	u_long p;
-	struct tls_config *tls_cfg = NULL; // TLS config
-	struct tls *tls_ctx = NULL; // TLS context
-	struct tls *tls_cctx = NULL; // client's TLS context
 
 	/*
 	 * first, figure out what port we will listen on - it should
@@ -65,23 +87,9 @@ int main(int argc,  char *argv[])
 	/* now safe to do this */
 	port = p;
 
-	/* set up TLS */
-	if ((tls_cfg = tls_config_new()) == NULL)
-		errx(1, "unable to allocate TLS config");
-	if (tls_config_set_ca_file(tls_cfg, "/home/CS165/tlscache-master/certificates/root.pem") == -1)
-		errx(1, "unable to set root CA file");
-	if (tls_config_set_cert_file(tls_cfg, "/home/CS165/tlscache-master/certificates/server.crt") == -1) 
-		errx(1, "unable to set TLS certificate file, error: (%s)", tls_config_error(tls_cfg));
-	if (tls_config_set_key_file(tls_cfg, "/home/CS165/tlscache-master/certificates/server.key") == -1)
-		errx(1, "unable to set TLS key file");
-	if ((tls_ctx = tls_server()) == NULL)
-		errx(1, "TLS server creation failed");
-	if (tls_configure(tls_ctx, tls_cfg) == -1)
-		errx(1, "TLS configuration failed (%s)", tls_error(tls_ctx));
-
 	/* the message we send the client */
-	strncpy(buffer,
-	    "It was the best of times, it was the worst of times... \n",
+	strlcpy(buffer,
+	    "What is the air speed velocity of a coconut laden swallow?\n",
 	    sizeof(buffer));
 
 	memset(&sockname, 0, sizeof(sockname));
@@ -142,16 +150,6 @@ int main(int argc,  char *argv[])
 
 		if(pid == 0) {
 			ssize_t written, w;
-			i = 0;
-			if (tls_accept_socket(tls_ctx, &tls_cctx, clientsd) == -1)
-				errx(1, "tls accept failed (%s)", tls_error(tls_ctx));
-			else {
-				do {
-					if ((i = tls_handshake(tls_cctx)) == -1)
-						errx(1, "tls handshake failed (%s)", tls_error(tls_ctx));
-				} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
-			}
-
 			/*
 			 * write the message to the client, being sure to
 			 * handle a short write, or being interrupted by
@@ -160,23 +158,15 @@ int main(int argc,  char *argv[])
 			w = 0;
 			written = 0;
 			while (written < strlen(buffer)) {
-				w = tls_write(tls_cctx, buffer + written,
+				w = write(clientsd, buffer + written,
 				    strlen(buffer) - written);
-
-				if (w == TLS_WANT_POLLIN || w == TLS_WANT_POLLOUT)
-					continue;
-
-				if (w < 0) {
-					errx(1, "TLS write failed (%s)", tls_error(tls_cctx));
+				if (w == -1) {
+					if (errno != EINTR)
+						err(1, "write failed");
 				}
 				else
 					written += w;
 			}
-			i = 0;
-			do {
-				i = tls_close(tls_cctx);
-			} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
-
 			close(clientsd);
 			exit(0);
 		}
