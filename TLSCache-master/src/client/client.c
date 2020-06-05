@@ -53,8 +53,10 @@ int main(int argc, char *argv[])
 	}
 	/* now safe to do this */
 	port = p;
-
+	
+	
 	/* set up TLS */
+	printf("setting up TLS");
 	if (tls_init() == -1)
 		errx(1, "unable to initialize TLS");
 	if ((tls_cfg = tls_config_new()) == NULL)
