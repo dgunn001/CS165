@@ -25,6 +25,7 @@ static void usage()
 
 int main(int argc, char *argv[])
 {
+	printf("run?");
 	struct sockaddr_in server_sa;
 	char buffer[80], *ep;
 	size_t maxread;
