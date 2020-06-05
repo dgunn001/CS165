@@ -62,7 +62,12 @@ int main(int argc,  char *argv[])
 	u_short port;
 	pid_t pid;
 	u_long p;
-
+	
+	//initialize tls 
+	struct tls_config *tls_cfg = NULL; // TLS config
+	struct tls *tls_ctx = NULL; // TLS context
+	struct tls *tls_cctx = NULL; // client's TLS context
+	
 	/*
 	 * first, figure out what port we will listen on - it should
 	 * be our first parameter.
@@ -86,7 +91,11 @@ int main(int argc,  char *argv[])
 	}
 	/* now safe to do this */
 	port = p;
-
+	
+	//set up TLS
+	if ((tls_cfg = tls_config_new()) == NULL)
+		errx(1, "unable to allocate TLS config");
+	
 	/* the message we send the client */
 	strlcpy(buffer,
 	    "What is the air speed velocity of a coconut laden swallow?\n",
