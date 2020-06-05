@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 		errx(1, "unable to initialize TLS");
 	if ((tls_cfg = tls_config_new()) == NULL)
 		errx(1, "unable to allocate TLS config");
-	if (tls_config_set_ca_file(tls_cfg, "/home/praja002/Teaching/CS165-Security-Spring2020/tlscache/certificates/root.pem") == -1)
+	if (tls_config_set_ca_file(tls_cfg, "/home/csmajs/dgunn001/CS165/TLSCache-master/certificates/root.pem") == -1)
 		errx(1, "unable to set root CA file");
 
 	/*
