@@ -80,7 +80,7 @@ int main(int argc,  char *argv[])
 		errx(1, "TLS configuration failed (%s)", tls_error(tls_ctx));
 
 	/* the message we send the client */
-	strlcpy(buffer,
+	strncpy(buffer,
 	    "It was the best of times, it was the worst of times... \n",
 	    sizeof(buffer));
 
