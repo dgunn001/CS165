@@ -171,6 +171,16 @@ int main(int argc,  char *argv[])
 
 		if(pid == 0) {
 			ssize_t written, w;
+			//add socket and handshake
+			i = 0;
+			if (tls_accept_socket(tls_ctx, &tls_cctx, clientsd) == -1)
+				errx(1, "tls accept failed (%s)", tls_error(tls_ctx));
+			else {
+				do {
+					if ((i = tls_handshake(tls_cctx)) == -1)
+						errx(1, "tls handshake failed (%s)", tls_error(tls_ctx));
+				} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
+			}
 			/*
 			 * write the message to the client, being sure to
 			 * handle a short write, or being interrupted by
@@ -179,15 +189,23 @@ int main(int argc,  char *argv[])
 			w = 0;
 			written = 0;
 			while (written < strlen(buffer)) {
-				w = write(clientsd, buffer + written,
+				w = tls_write(tls_cctx, buffer + written,
 				    strlen(buffer) - written);
-				if (w == -1) {
-					if (errno != EINTR)
-						err(1, "write failed");
+
+				if (w == TLS_WANT_POLLIN || w == TLS_WANT_POLLOUT)
+					continue;
+
+				if (w < 0) {
+					errx(1, "TLS write failed (%s)", tls_error(tls_cctx));
 				}
 				else
 					written += w;
 			}
+			i = 0;
+			do {
+				i = tls_close(tls_cctx);
+			} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
+
 			close(clientsd);
 			exit(0);
 		}
