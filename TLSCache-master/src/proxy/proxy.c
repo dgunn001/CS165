@@ -97,11 +97,11 @@ int main(int argc,  char *argv[])
 	//setup TLS
 	if ((tls_cfg = tls_config_new()) == NULL)
 		errx(1, "unable to allocate TLS config");
-	if (tls_config_set_ca_file(tls_cfg, "/home/dgunn/CS165/tlscache-master/certificates/root.pem") == -1)
+	if (tls_config_set_ca_file(tls_cfg, "/CS165/TLSCache-master/certificates/root.pem") == -1)
 		errx(1, "unable to set root CA file");
-	if (tls_config_set_cert_file(tls_cfg, "/home/dgunn/CS165/tlscache-master/certificates/server.crt") == -1) 
+	if (tls_config_set_cert_file(tls_cfg, "/CS165/TLSCache-master/certificates/server.crt") == -1) 
 		errx(1, "unable to set TLS certificate file, error: (%s)", tls_config_error(tls_cfg));
-	if (tls_config_set_key_file(tls_cfg, "/home/dgunn/CS165/tlscache-master/praja002/Teaching/CS165-Security-Spring2020/tlscache/certificates/server.key") == -1)
+	if (tls_config_set_key_file(tls_cfg, "/CS165/TLSCache-master/certificates/server.key") == -1)
 		errx(1, "unable to set TLS key file");
 	if ((tls_ctx = tls_server()) == NULL)
 		errx(1, "TLS server creation failed");
