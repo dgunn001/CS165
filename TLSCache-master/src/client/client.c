@@ -132,6 +132,18 @@ int main(int argc, char *argv[])
 // 				else
 // 					written += w;
 // 			}
+	while (len > 0) {
+	ssize_t ret;
+
+	ret = tls_write(tls_ctx, filename, len);
+	if (ret == TLS_WANT_POLLIN || ret == TLS_WANT_POLLOUT)
+		continue;
+	if (ret == -1)
+		errx(1, "tls_write: %s", tls_error(ctx));
+	buf += ret;
+	len -= ret;
+	}
+	
 	r = -1;
 	rc = 0;
 	maxread = sizeof(buffer) - 1; /* leave room for a 0 byte */
