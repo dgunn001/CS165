@@ -192,7 +192,7 @@ int main(int argc,  char *argv[])
 				} else
 					rc += r;
 			}
-			printf(filename);
+			printf(buffer);
 			if(buffer == "filename"){
 					strncpy(buffer,
 	    "Hello world\n",
