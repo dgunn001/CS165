@@ -196,7 +196,7 @@ int main(int argc,  char *argv[])
 				/*
 			 * first set up "server_sa" to be the location of the server
 	 		*/
-			if ((tls_sctx = tls_server()) == NULL)
+			if ((tls_ctx = tls_server()) == NULL)
 				errx(1, "TLS server creation failed");
 			if (tls_init() == -1)
 				errx(1, "unable to initialize TLS");
@@ -204,6 +204,8 @@ int main(int argc,  char *argv[])
 				errx(1, "unable to allocate TLS config");
 			if (tls_config_set_ca_file(tls_cfg, "/home/csmajs/dgunn001/CS165/TLSCache-master/certificates/root.pem") == -1)
 				errx(1, "unable to set root CA file");
+			
+			
 			memset(&server_sa, 0, sizeof(server_sa));
 			server_sa.sin_family = AF_INET;
 			server_sa.sin_port = htons(serverport);
