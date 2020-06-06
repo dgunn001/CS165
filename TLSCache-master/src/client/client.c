@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
 // 					written += w;
 // 			}
 	strncpy(buffer,
-	    filename + "/n",
+	    filename,
 	    sizeof(buffer));
 	r = -1;
 	rc = 0;
