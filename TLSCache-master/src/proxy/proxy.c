@@ -125,7 +125,7 @@ int main(int argc,  char *argv[])
 	/*
 	 * finally - the main loop.  accept connections and deal with 'em
 	 */
-	printf("Server up and listening for connections on port %u\n", port);
+	printf("Proxy up and listening for connections on port %u\n", port);
 	for(;;) {
 		
 		int clientsd;
