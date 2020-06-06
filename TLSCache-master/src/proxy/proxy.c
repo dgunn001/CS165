@@ -31,6 +31,7 @@ int main(int argc,  char *argv[])
 {
 	struct sockaddr_in sockname, client;
 	char buffer[80], *ep;
+	size_t maxread;
 	struct sigaction sa;
 	int sd, i;
 	socklen_t clientlen;
