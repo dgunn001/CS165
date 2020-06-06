@@ -145,36 +145,6 @@ int main(int argc,  char *argv[])
 
 		if(pid == 0) {
 			ssize_t written, w,r ,rc;
-
-			i = 0;
-			if (tls_accept_socket(tls_ctx, &tls_cctx, clientsd) == -1)
-				errx(1, "tls accept failed (%s)", tls_error(tls_ctx));
-			else {
-				do {
-					if ((i = tls_handshake(tls_cctx)) == -1)
-						errx(1, "tls handshake failed (%s)", tls_error(tls_ctx));
-				} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
-			}
-			
-			/*
-			 * RECEIVE FILE NAME FROM CLIENT
-		 	*/
-			r = -1;
-			rc = 0;
-			maxread = sizeof(buffer) - 1; /* leave room for a 0 byte */
-			while ((r != 0) && rc < maxread) {
-			//printf("reading");
-				r = tls_read(tls_cctx, buffer + rc, maxread - rc);
-				if (r == TLS_WANT_POLLIN || r == TLS_WANT_POLLOUT)
-					continue;
-				if (r < 0) {
-					err(1, "tls_read failed (%s)", tls_error(tls_cctx));
-				} else
-					rc += r;
-			}
-			//TODO FLITER
-			//TODO CONNECTION TO SERVER
-			
 			/*
 			 * write the message to the client, being sure to
 			 * handle a short write, or being interrupted by
