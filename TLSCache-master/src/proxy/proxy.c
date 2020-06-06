@@ -33,7 +33,7 @@ int main(int argc,  char *argv[])
 	char buffer[80], *ep;
 	size_t maxread;
 	struct sigaction sa;
-	int sd, i;
+	int sd, i, sdd;
 	socklen_t clientlen;
 	u_short port;
 	u_short serverport;
@@ -204,12 +204,12 @@ int main(int argc,  char *argv[])
 				fprintf(stderr, "Invalid IP address %s\n", argv[2]);
 				usage();
 			}
-			if ((sd=socket(AF_INET,SOCK_STREAM,0)) == -1)
+			if ((sdd=socket(AF_INET,SOCK_STREAM,0)) == -1)
 				err(1, "socket failed");
 
 			/* connect the socket to the server described in "server_sa" */
 			printf(argv[2]);
-			if (connect(sd, (struct sockaddr *)&server_sa, sizeof(server_sa)) == -1)
+			if (connect(sdd, (struct sockaddr *)&server_sa, sizeof(server_sa)) == -1)
 				err(1, "connect failed");
 
 			if ((tls_sctx = tls_client()) == NULL)
