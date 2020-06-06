@@ -116,6 +116,7 @@ int main(int argc, char *argv[])
 	 */
 	
 	//ADDED write filename to the proxy
+	ssize_t written, w;
 			w = 0;
 			written = 0;
 			while (written < strlen(buffer)) {
