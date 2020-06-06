@@ -192,16 +192,15 @@ int main(int argc,  char *argv[])
 				} else
 					rc += r;
 			}
+			//client proxy communication testing
+			printf("file found printing contents of : ");
 			printf(buffer);
-			if(buffer == "filename"){
-					strncpy(buffer,
-	    "Hello world\n",
-	    sizeof(buffer));
-			} else {
-					strncpy(buffer,
-	    "enter valid filename \n",
-	    sizeof(buffer));
-			}
+			printf('/n');
+			strncpy(buffer,
+	    			"It was the best of times, it was the worst of times... \n",
+	    		sizeof(buffer));
+			
+
 			//TODO FLITER
 				/*
 			 * first set up "server_sa" to be the location of the server
