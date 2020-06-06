@@ -196,6 +196,8 @@ int main(int argc,  char *argv[])
 				/*
 			 * first set up "server_sa" to be the location of the server
 	 		*/
+			if ((tls_sctx = tls_server()) == NULL)
+				errx(1, "TLS server creation failed");
 			if (tls_init() == -1)
 				errx(1, "unable to initialize TLS");
 			if ((tls_cfg = tls_config_new()) == NULL)
