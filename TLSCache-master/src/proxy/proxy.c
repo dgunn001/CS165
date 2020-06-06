@@ -41,6 +41,7 @@ int main(int argc,  char *argv[])
 	struct tls_config *tls_cfg = NULL; // TLS config
 	struct tls *tls_ctx = NULL; // TLS context
 	struct tls *tls_cctx = NULL; // client's TLS context
+	struct tls *tls_sctx = NULL; // server's TLS context
 
 	/*
 	 * first, figure out what port we will listen on - it should
@@ -155,6 +156,9 @@ int main(int argc,  char *argv[])
 				} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
 			}
 			
+			/*
+			 * RECEIVE FILE NAME FROM CLIENT
+		 	*/
 			r = -1;
 			rc = 0;
 			maxread = sizeof(buffer) - 1; /* leave room for a 0 byte */
@@ -168,6 +172,9 @@ int main(int argc,  char *argv[])
 				} else
 					rc += r;
 			}
+			//TODO FLITER
+			//TODO CONNECTION TO SERVER
+			
 			/*
 			 * write the message to the client, being sure to
 			 * handle a short write, or being interrupted by
