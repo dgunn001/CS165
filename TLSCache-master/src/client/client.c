@@ -116,29 +116,21 @@ int main(int argc, char *argv[])
 	 */
 	
 	//ADDED write filename to the proxy
-// 	printf("1");
-// 	int serversd;
-// 	socklen_t serverlen;
-// 	serverlen = sizeof(&server_sa);
-// 	serversd = accept(sd, (struct sockaddr *)&server_sa, &serverlen);
-	
-// 	printf("2");
-// 	strncpy(buffer, filename, sizeof(buffer));
-// 	ssize_t w , written;
-// 	w = 0;
-// 	written = 0;
-// 	printf("3");
-// 	while(written < strlen(buffer)){
-// 		w = tls_write(tls_sctx, buffer + written,strlen(buffer) - written);
-// 		if(w == TLS_WANT_POLLIN || TLS_WANT_POLLOUT)
-// 			continue;
+			w = 0;
+			written = 0;
+			while (written < strlen(buffer)) {
+				w = tls_write(tls_ctx, buffer + written,
+				    strlen(buffer) - written);
 
-// 		if(w < 0) {
-// 			errx(1 , "TLS write fail (client) (%s)", tls_error(tls_sctx));
-// 		}
-// 		else written+=w;
-// 	}
-// 	printf("4");
+				if (w == TLS_WANT_POLLIN || w == TLS_WANT_POLLOUT)
+					continue;
+
+				if (w < 0) {
+					errx(1, "TLS write failed (%s)", tls_error(tls_ctx));
+				}
+				else
+					written += w;
+			}
 	r = -1;
 	rc = 0;
 	maxread = sizeof(buffer) - 1; /* leave room for a 0 byte */
