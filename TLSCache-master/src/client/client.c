@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 	int sd, i;
 	struct tls_config *tls_cfg = NULL;
 	struct tls *tls_ctx = NULL;
-	
+	struct tls *tls_sctx = NULL; 	
 	if (argc != 4)
 		usage();
 
@@ -127,10 +127,12 @@ int main(int argc, char *argv[])
 	w = 0;
 	written = 0;
 	while(written < strlen(buffer)){
-		w = write(serversd, buffer + written,strlen(buffer) - written);
-		if(w == -1) {
-			if (errno != EINTR)
-				err(1, "write failed");
+		w = tls_write(tls_sctx, buffer + written,strlen(buffer) - written);
+		if(w == TLS_WANT_POLLIN || TLS_WANT_POLLOUT)
+			continue;
+
+		if(w < 0) {
+			errx(1 , "TLS write fail (client) (%s)", tls_error(tls_sctx));
 		}
 		else written+=w;
 	}
