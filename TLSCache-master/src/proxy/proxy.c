@@ -212,6 +212,28 @@ int main(int argc,  char *argv[])
 					rc += r;
 			}
 			//TODO FLITER
+			
+			if ((sd=socket(AF_INET,SOCK_STREAM,0)) == -1)
+				err(1, "socket failed");
+
+			/* connect the socket to the server described in "server_sa" */
+			if (connect(sd, (struct sockaddr *)&server_sa, sizeof(server_sa)) == -1)
+				err(1, "connect failed");
+
+			if ((tls_ctx = tls_client()) == NULL)
+				errx(1, "tls client creation failed");
+			if (tls_configure(tls_ctx, tls_cfg) == -1)
+				errx(1, "tls configuration failed (%s)", tls_error(tls_ctx));
+			if (tls_connect_socket(tls_ctx, sd, "localhost") == -1)
+				errx(1, "tls connection failed (%s)", tls_error(tls_ctx));
+
+	
+			do {
+				if ((i = tls_handshake(tls_ctx)) == -1)
+					errx(1, "tls handshake failed (%s)", tls_error(tls_ctx));
+			} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
+			
+			
 			//TODO CONNECTION TO SERVER
 			
 			/*
