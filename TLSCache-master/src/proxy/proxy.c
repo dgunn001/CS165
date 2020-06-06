@@ -125,9 +125,11 @@ int main(int argc,  char *argv[])
 	 */
 	printf("Server up and listening for connections on port %u\n", port);
 	for(;;) {
+		
 		int clientsd;
 		clientlen = sizeof(&client);
 		clientsd = accept(sd, (struct sockaddr *)&client, &clientlen);
+		
 		if (clientsd == -1)
 			err(1, "accept failed");
 		/*
@@ -135,13 +137,27 @@ int main(int argc,  char *argv[])
 		 * than one client can connect to us and get served at any one
 		 * time.
 		 */
-
 		pid = fork();
 		if (pid == -1)
 		     err(1, "fork failed");
 
 		if(pid == 0) {
-			ssize_t written, w;
+			ssize_t written, w, r, rc;
+			size_t maxread;
+			//add read from client
+			r = -1;
+			rc = 0;
+			maxread = sizeof(buffer) - 1;
+			while ((r != 0) && rc < maxread){
+				r = tls_read(tls_ctx, buffer + rc, maxread - rc);
+				if(r == TLS_WANT_POLLIN || r == TLS_WANT_POLLOUT)
+					continue;
+				if(r < 0) {
+					err(1, "tls_read failed (%s", tls_error(tls_ctx));
+				} else rc += r;
+			}
+			
+
 			i = 0;
 			if (tls_accept_socket(tls_ctx, &tls_cctx, clientsd) == -1)
 				errx(1, "tls accept failed (%s)", tls_error(tls_ctx));
