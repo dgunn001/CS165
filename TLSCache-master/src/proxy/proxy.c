@@ -142,7 +142,7 @@ int main(int argc,  char *argv[])
 		     err(1, "fork failed");
 
 		if(pid == 0) {
-			//ssize_t written, w, r, rc;
+			ssize_t written, w;
 			//size_t maxread;
 			//add read from client
 			//r = -1;
