@@ -19,7 +19,7 @@
 static void usage()
 {
 	extern char * __progname;
-	fprintf(stderr, "usage: %s ipaddress portnumber\n", __progname);
+	fprintf(stderr, "usage: %s ipaddress portnumber filename\n", __progname);
 	exit(1);
 }
 
@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
 	int sd, i;
 	struct tls_config *tls_cfg = NULL;
 	struct tls *tls_ctx = NULL;
-
-	if (argc != 3)
+	
+	if (argc != 4)
 		usage();
 
         p = strtoul(argv[2], &ep, 10);
@@ -52,9 +52,11 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "%s - value out of range\n", argv[2]);
 		usage();
 	}
+	//added ASSIGN FOR FILENAME
+	char *filename = argv[3];
 	/* now safe to do this */
 	port = p;
-	
+	printf(filename);
 	
 	/* set up TLS */
 	//printf("setting up TLS");
@@ -112,6 +114,27 @@ int main(int argc, char *argv[])
 	 * we also make sure we handle EINTR in case we got interrupted
 	 * by a signal.
 	 */
+	
+	//ADDED write filename to the proxy
+	int serversd;
+	socklen_t serverlen;
+	serverlen = sizeof(&server_sa);
+	serversd = accept(sd, (struct sockaddr *)&server_sa, &serverlen);
+	
+	
+	strncpy(buffer, filename, sizeof(buffer));
+	ssize_t w , written;
+	w = 0;
+	written = 0;
+	while(written < strlen(buffer)){
+		w = write(serversd, buffer + written,strlen(buffer) - written);
+		if(w == -1) {
+			if (errno != EINTR)
+				err(1, "write failed");
+		}
+		else written+=w;
+	}
+	
 	r = -1;
 	rc = 0;
 	maxread = sizeof(buffer) - 1; /* leave room for a 0 byte */
