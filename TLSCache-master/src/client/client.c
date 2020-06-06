@@ -133,10 +133,11 @@ int main(int argc, char *argv[])
 // 					written += w;
 // 			}
 	ssize_t len = sizeof(filename);
+	char* buf[len] = filename;
 	while (len > 0) {
 	ssize_t ret;
 
-	ret = tls_write(tls_ctx, filename, len);
+	ret = tls_write(tls_ctx, buf, len);
 	if (ret == TLS_WANT_POLLIN || ret == TLS_WANT_POLLOUT)
 		continue;
 	if (ret == -1)
