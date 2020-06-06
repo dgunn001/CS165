@@ -195,7 +195,7 @@ int main(int argc,  char *argv[])
 			//client proxy communication testing
 			printf("file found printing contents of : ");
 			printf(buffer);
-			printf('/n');
+			printf("/n");
 			strncpy(buffer,
 	    			"It was the best of times, it was the worst of times... \n",
 	    		sizeof(buffer));
