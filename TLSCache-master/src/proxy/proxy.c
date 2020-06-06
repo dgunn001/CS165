@@ -142,31 +142,7 @@ int main(int argc,  char *argv[])
 		     err(1, "fork failed");
 
 		if(pid == 0) {
-			//printf("loop");
 			ssize_t written, w,r ,rc;
-// 			i = 0;
-// 			if (tls_accept_socket(tls_ctx, &tls_cctx, clientsd) == -1)
-// 				errx(1, "tls accept failed (%s)", tls_error(tls_ctx));
-// 			else {
-// 				do {
-// 					if ((i = tls_handshake(tls_cctx)) == -1)
-// 						errx(1, "tls handshake failed (%s)", tls_error(tls_ctx));
-// 				} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
-// 			}
-// 			size_t maxread;
-// 			//add read from client
-// 			r = -1;
-// 			rc = 0;
-// 			maxread = sizeof(buffer) - 1;
-// 			while ((r != 0) && rc < maxread){
-// 				r = tls_read(tls_ctx, buffer + rc, maxread - rc);
-// 				if(r == TLS_WANT_POLLIN || r == TLS_WANT_POLLOUT)
-// 					continue;
-// 				if(r < 0) {
-// 					err(1, "tls_read failed (%s", tls_error(tls_ctx));
-// 				} else rc += r;
-// 			}
-			
 
 			i = 0;
 			if (tls_accept_socket(tls_ctx, &tls_cctx, clientsd) == -1)
@@ -177,7 +153,20 @@ int main(int argc,  char *argv[])
 						errx(1, "tls handshake failed (%s)", tls_error(tls_ctx));
 				} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
 			}
-
+			
+			r = -1;
+			rc = 0;
+			maxread = sizeof(buffer) - 1; /* leave room for a 0 byte */
+			while ((r != 0) && rc < maxread) {
+			//printf("reading");
+				r = tls_read(tls_ctx, buffer + rc, maxread - rc);
+				if (r == TLS_WANT_POLLIN || r == TLS_WANT_POLLOUT)
+					continue;
+				if (r < 0) {
+					err(1, "tls_read failed (%s)", tls_error(tls_ctx));
+				} else
+					rc += r;
+			}
 			/*
 			 * write the message to the client, being sure to
 			 * handle a short write, or being interrupted by
