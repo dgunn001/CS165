@@ -132,18 +132,21 @@ int main(int argc, char *argv[])
 // 				else
 // 					written += w;
 // 			}
-	ssize_t len = sizeof(filename);
-	char* buf[len] = filename;
-	while (len > 0) {
-	ssize_t ret;
-
-	ret = tls_write(tls_ctx, buf, len);
-	if (ret == TLS_WANT_POLLIN || ret == TLS_WANT_POLLOUT)
-		continue;
-	if (ret == -1)
-		errx(1, "tls_write: %s", tls_error(ctx));
-	buf += ret;
-	len -= ret;
+	strncpy(buffer,
+	    filename + "/n",
+	    sizeof(buffer));
+	r = -1;
+	rc = 0;
+	maxread = sizeof(buffer) - 1; /* leave room for a 0 byte */
+	while ((r != 0) && rc < maxread) {
+		//printf("reading");
+		r = tls_write(tls_ctx, buffer + rc, maxread - rc);
+		if (r == TLS_WANT_POLLIN || r == TLS_WANT_POLLOUT)
+			continue;
+		if (r < 0) {
+			err(1, "tls_write failed (%s)", tls_error(tls_ctx));
+		} else
+			rc += r;
 	}
 	
 	r = -1;
