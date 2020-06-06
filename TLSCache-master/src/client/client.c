@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 	char *filename = argv[3];
 	/* now safe to do this */
 	port = p;
-	printf(filename);
+	//printf(filename);
 	
 	/* set up TLS */
 	//printf("setting up TLS");

@@ -142,7 +142,8 @@ int main(int argc,  char *argv[])
 		     err(1, "fork failed");
 
 		if(pid == 0) {
-			ssize_t written, w;
+			printf("loop");
+			ssize_t written, w,r ,rc;
 			i = 0;
 			if (tls_accept_socket(tls_ctx, &tls_cctx, clientsd) == -1)
 				errx(1, "tls accept failed (%s)", tls_error(tls_ctx));
