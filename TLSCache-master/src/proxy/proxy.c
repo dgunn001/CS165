@@ -208,6 +208,7 @@ int main(int argc,  char *argv[])
 				err(1, "socket failed");
 
 			/* connect the socket to the server described in "server_sa" */
+			printf(argv[2]);
 			if (connect(sd, (struct sockaddr *)&server_sa, sizeof(server_sa)) == -1)
 				err(1, "connect failed");
 
