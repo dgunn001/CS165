@@ -193,9 +193,13 @@ int main(int argc,  char *argv[])
 					rc += r;
 			}
 			if(buffer == "filename"){
-				buffer = "hello world/n";
+					strncpy(buffer,
+	    "Hello world\n",
+	    sizeof(buffer));
 			} else {
-				buffer = "enter valid file/n";
+					strncpy(buffer,
+	    "enter valid filename \n",
+	    sizeof(buffer));
 			}
 			//TODO FLITER
 				/*
