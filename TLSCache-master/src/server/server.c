@@ -49,7 +49,7 @@ int main(int argc,  char *argv[])
 	 * be our first parameter.
 	 */
 
-	if (argc != 3)
+	if (argc != 2)
 		usage();
 		errno = 0;
         p = strtoul(argv[1], &ep, 10);
