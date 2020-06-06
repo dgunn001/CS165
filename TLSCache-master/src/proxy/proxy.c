@@ -29,15 +29,17 @@ static void kidhandler(int signum) {
 
 int main(int argc,  char *argv[])
 {
-	struct sockaddr_in sockname, client;
+	struct sockaddr_in sockname, client, server_sa;
 	char buffer[80], *ep;
 	size_t maxread;
 	struct sigaction sa;
 	int sd, i;
 	socklen_t clientlen;
 	u_short port;
+	u_short serverport;
 	pid_t pid;
 	u_long p;
+	u_long sp;
 	struct tls_config *tls_cfg = NULL; // TLS config
 	struct tls *tls_ctx = NULL; // TLS context
 	struct tls *tls_cctx = NULL; // client's TLS context
@@ -48,10 +50,11 @@ int main(int argc,  char *argv[])
 	 * be our first parameter.
 	 */
 
-	if (argc != 2)
+	if (argc != 3)
 		usage();
 		errno = 0;
         p = strtoul(argv[1], &ep, 10);
+	
         if (*argv[1] == '\0' || *ep != '\0') {
 		/* parameter wasn't a number, or was empty */
 		fprintf(stderr, "%s - not a number\n", argv[1]);
@@ -64,8 +67,23 @@ int main(int argc,  char *argv[])
 		fprintf(stderr, "%s - value out of range\n", argv[1]);
 		usage();
 	}
+	
+	sp = strtoul(argv[2], &ep, 10);      
+	if (*argv[2] == '\0' || *ep != '\0') {
+		/* parameter wasn't a number, or was empty */
+		fprintf(stderr, "%s - not a number\n", argv[2]);
+		usage();
+	}
+        if ((errno == ERANGE && sp == ULONG_MAX) || (sp > USHRT_MAX)) {
+		/* It's a number, but it either can't fit in an unsigned
+		 * long, or is too big for an unsigned short
+		 */
+		fprintf(stderr, "%s - value out of range\n", argv[2]);
+		usage();
+	}
 	/* now safe to do this */
 	port = p;
+	serverport = sp;
 
 	/* set up TLS */
 	if ((tls_cfg = tls_config_new()) == NULL)
@@ -85,12 +103,33 @@ int main(int argc,  char *argv[])
 	strncpy(buffer,
 	    "It was the best of times, it was the worst of times... \n",
 	    sizeof(buffer));
+	/*
+	 * first set up "server_sa" to be the location of the server
+	 */
+	memset(&server_sa, 0, sizeof(server_sa));
+	server_sa.sin_family = AF_INET;
+	server_sa.sin_port = htons(serverport);
+	server_sa.sin_addr.s_addr = inet_addr(argv[2]);
+	if (server_sa.sin_addr.s_addr == INADDR_NONE) {
+		fprintf(stderr, "Invalid IP address %s\n", argv[2]);
+		usage();
+	}
+	sd=socket(AF_INET,SOCK_STREAM,0);	
+	if ( sd == -1)
+		err(1, "socket failed");
 
+	if (bind(sd, (struct sockaddr *) &server_sa, sizeof(server_sa)) == -1)
+		err(1, "bind failed");
+
+	if (listen(sd,3) == -1)
+		err(1, "listen failed");
+	
 	memset(&sockname, 0, sizeof(sockname));
 	sockname.sin_family = AF_INET;
 	sockname.sin_port = htons(port);
 	sockname.sin_addr.s_addr = htonl(INADDR_ANY);
 	sd=socket(AF_INET,SOCK_STREAM,0);
+	
 	if ( sd == -1)
 		err(1, "socket failed");
 
