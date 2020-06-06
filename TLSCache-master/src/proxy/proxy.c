@@ -106,23 +106,7 @@ int main(int argc,  char *argv[])
 	/*
 	 * first set up "server_sa" to be the location of the server
 	 */
-	memset(&server_sa, 0, sizeof(server_sa));
-	server_sa.sin_family = AF_INET;
-	server_sa.sin_port = htons(serverport);
-	server_sa.sin_addr.s_addr = inet_addr(argv[2]);
-	if (server_sa.sin_addr.s_addr == INADDR_NONE) {
-		fprintf(stderr, "Invalid IP address %s\n", argv[2]);
-		usage();
-	}
-	sd=socket(AF_INET,SOCK_STREAM,0);	
-	if ( sd == -1)
-		err(1, "socket failed");
-
-	if (bind(sd, (struct sockaddr *) &server_sa, sizeof(server_sa)) == -1)
-		err(1, "bind failed");
-
-	if (listen(sd,3) == -1)
-		err(1, "listen failed");
+	
 	
 	memset(&sockname, 0, sizeof(sockname));
 	sockname.sin_family = AF_INET;
@@ -212,7 +196,23 @@ int main(int argc,  char *argv[])
 					rc += r;
 			}
 			//TODO FLITER
-			
+			memset(&server_sa, 0, sizeof(server_sa));
+			server_sa.sin_family = AF_INET;
+			server_sa.sin_port = htons(serverport);
+			server_sa.sin_addr.s_addr = inet_addr(argv[2]);
+			if (server_sa.sin_addr.s_addr == INADDR_NONE) {
+				fprintf(stderr, "Invalid IP address %s\n", argv[2]);
+				usage();
+			}
+			sd=socket(AF_INET,SOCK_STREAM,0);	
+			if ( sd == -1)
+				err(1, "socket failed");
+
+			if (bind(sd, (struct sockaddr *) &server_sa, sizeof(server_sa)) == -1)
+				err(1, "bind failed");
+
+			if (listen(sd,3) == -1)
+				err(1, "listen failed");
 			if ((sd=socket(AF_INET,SOCK_STREAM,0)) == -1)
 				err(1, "socket failed");
 
