@@ -132,6 +132,7 @@ int main(int argc, char *argv[])
 // 				else
 // 					written += w;
 // 			}
+	ssize_t len = sizeof(filename);
 	while (len > 0) {
 	ssize_t ret;
 
