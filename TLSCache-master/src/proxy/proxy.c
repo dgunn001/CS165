@@ -215,35 +215,35 @@ int main(int argc,  char *argv[])
 // 				errx(1, "unable to set root CA file");
 			
 			
-// 			memset(&server_sa, 0, sizeof(server_sa));
-// 			server_sa.sin_family = AF_INET;
-// 			server_sa.sin_port = htons(serverport);
-// 			server_sa.sin_addr.s_addr = inet_addr(argv[2]);
-// 			if (server_sa.sin_addr.s_addr == INADDR_NONE) {
-// 				fprintf(stderr, "Invalid IP address %s\n", argv[2]);
-// 				usage();
-// 			}
-// 			if ((sdd=socket(AF_INET,SOCK_STREAM,0)) == -1)
-// 				err(1, "socket failed");
+			memset(&server_sa, 0, sizeof(server_sa));
+			server_sa.sin_family = AF_INET;
+			server_sa.sin_port = htons(serverport);
+			server_sa.sin_addr.s_addr = inet_addr(argv[2]);
+			if (server_sa.sin_addr.s_addr == INADDR_NONE) {
+				fprintf(stderr, "Invalid IP address %s\n", argv[2]);
+				usage();
+			}
+			if ((sdd=socket(AF_INET,SOCK_STREAM,0)) == -1)
+				err(1, "socket failed");
 
-// 			/* connect the socket to the server described in "server_sa" */
-// 			printf(argv[2]);
-// 			if (connect(sdd, (struct sockaddr *)&server_sa, sizeof(server_sa)) == -1)
-// 				err(1, "connect failed");
+			/* connect the socket to the server described in "server_sa" */
+			printf(argv[2]);
+			if (connect(sdd, (struct sockaddr *)&server_sa, sizeof(server_sa)) == -1)
+				err(1, "connect failed");
 
-// 			if ((tls_sctx = tls_client()) == NULL)
-// 				errx(1, "tls client creation failed");
-// 			if (tls_configure(tls_sctx, tls_cfg) == -1)
-// 				errx(1, "tls configuration failed (%s)", tls_error(tls_sctx));
-// 			if (tls_connect_socket(tls_sctx, sd, "localhost") == -1)
-// 				errx(1, "tls connection failed (%s)", tls_error(tls_sctx));
+			if ((tls_sctx = tls_client()) == NULL)
+				errx(1, "tls client creation failed");
+			if (tls_configure(tls_sctx, tls_cfg) == -1)
+				errx(1, "tls configuration failed (%s)", tls_error(tls_sctx));
+			if (tls_connect_socket(tls_sctx, sd, "localhost") == -1)
+				errx(1, "tls connection failed (%s)", tls_error(tls_sctx));
 
 
-// 			do {
-// 				if ((i = tls_handshake(tls_sctx)) == -1)
-// 					errx(1, "tls handshake failed (%s)", tls_error(tls_sctx));
-// 			} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
-				
+			do {
+				if ((i = tls_handshake(tls_sctx)) == -1)
+					errx(1, "tls handshake failed (%s)", tls_error(tls_sctx));
+			} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
+			close(sdd);	
 			//TODO CONNECTION TO SERVER
 			
 			/*
