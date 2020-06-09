@@ -223,12 +223,12 @@ int main(int argc,  char *argv[])
 				fprintf(stderr, "Invalid IP address %s\n", argv[2]);
 				usage();
 			}
-			if ((sdd=socket(AF_INET,SOCK_STREAM,0)) == -1)
+			if ((sd=socket(AF_INET,SOCK_STREAM,0)) == -1)
 				err(1, "socket failed");
 
 			/* connect the socket to the server described in "server_sa" */
 			printf(argv[2]);
-			if (connect(sdd, (struct sockaddr *)&server_sa, sizeof(server_sa)) == -1)
+			if (connect(sd, (struct sockaddr *)&server_sa, sizeof(server_sa)) == -1)
 				err(1, "connect failed");
 
 			if ((tls_sctx = tls_client()) == NULL)
