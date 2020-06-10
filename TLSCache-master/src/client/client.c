@@ -25,7 +25,7 @@ unsigned long hash(unsigned char *str)
     unsigned int c;
 
     while (c = *str++)
-        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+        hash = ((hash << 5) + hash) % 31 + c; /* hash * 33 + c */
     printf("C: %d\n", c);
     printf("HASH: %d\n", hash);
     return hash;
