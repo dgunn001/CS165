@@ -25,7 +25,7 @@ unsigned long hash(unsigned char *str)
     unsigned int c;
 
     while (c = *str++)
-	printf("int c = %i\n", c); // only to visualize function
+	//printf("int c = %i\n", c); // only to visualize function
         hash = (((hash << 5) + hash) + c); /* hash * 33 + c */
     //printf("C: %d\n", c);
     printf("HASH: %d\n", hash);
