@@ -85,10 +85,6 @@ int main(int argc,  char *argv[])
 	if (tls_configure(tls_ctx, tls_cfg) == -1)
 		errx(1, "TLS configuration failed (%s)", tls_error(tls_ctx));
 
-	/* the message we send the client */
-	strncpy(buffer,
-	    "It was the worst of times, and it only got worse... \n",
-	    sizeof(buffer));
 
 	
 	memset(&sockname, 0, sizeof(sockname));
@@ -187,6 +183,11 @@ int main(int argc,  char *argv[])
 			 * handle a short write, or being interrupted by
 			 * a signal before we could write anything.
 			 */
+				/* the message we send the client */
+			strncpy(buffer,
+				    "It was the worst of times, and it only got worse... \n",
+				    sizeof(buffer));
+
 			w = 0;
 			written = 0;
 			while (written < strlen(buffer)) {
