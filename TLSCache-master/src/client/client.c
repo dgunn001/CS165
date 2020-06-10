@@ -80,8 +80,8 @@ int main(int argc, char *argv[])
 	}
 	//added ASSIGN FOR FILENAME
 	unsigned char *filename = argv[3];
-	printf(filename"\n");
-	printf(weight(filename,9998)"\n");
+	printf(filename);
+	printf("%d\n",weight(filename,9998));
 	/* now safe to do this */
 	port = p;
 	//printf(filename);
