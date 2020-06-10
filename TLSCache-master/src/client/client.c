@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 
 	printf("WIEGHT: %d\n",weight(filename,9998));
 	printf("FILENAME: %s\n", filename);
-	printf("PROXY NUM: %d\n, proxyNum(filename));
+	printf("PROXY NUM: %d\n", proxyNum(filename));
 	/* now safe to do this */
 	port = p;
 	//printf(filename);
