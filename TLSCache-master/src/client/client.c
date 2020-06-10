@@ -18,13 +18,28 @@
 
 int proxyAddr[6] = {9993,9994,9995,9996,9997,9998};
 
-// int hash(string Obj){
-	
+unsigned long hash(unsigned char *str)
+{
+    unsigned long hash = 5381;
+    int c;
 
-int weight(char *O, int S){
-    int h = 0;
-    h = hash(O);
-    return (31 * ((31 * S + 12345) ^ h) + 12345) % (6);
+    while (c = *str++)
+        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+
+    return hash;
+}	
+
+unsigned long weight(unsigned char *O, unsigned long S){
+    unsigned long h = 0;
+    char buf[40];
+    sprintf(buf, %d, S);
+    
+    char combine[40];
+    strcat(combine, O);
+    strcat(combine, buf);
+    printf(combine);
+    h = hash(combine);
+    return (h % 6);
 }
 
 static void usage()
@@ -64,8 +79,9 @@ int main(int argc, char *argv[])
 		usage();
 	}
 	//added ASSIGN FOR FILENAME
-	char *filename = argv[3];
+	unsigned char *filename = argv[3];
 	printf(filename);
+	printf(filename,9998);
 	/* now safe to do this */
 	port = p;
 	//printf(filename);
