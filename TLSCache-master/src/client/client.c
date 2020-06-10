@@ -18,15 +18,16 @@
 
 int proxyAddr[6] = {9993,9994,9995,9996,9997,9998};
 
-//hash function for rendezvous hashing
+//djb hash function for rendezvous hashing
 unsigned long hash(unsigned char *str)
 {
     unsigned long long hash = 5381;
     unsigned int c;
 
     while (c = *str++)
+	printf("int c = %i\n", c); // only to visualize function
         hash = (((hash << 5) + hash) + c); /* hash * 33 + c */
-    printf("C: %d\n", c);
+    //printf("C: %d\n", c);
     printf("HASH: %d\n", hash);
     return hash % 6;
 }	
