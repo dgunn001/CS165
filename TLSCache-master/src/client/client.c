@@ -16,52 +16,13 @@
 
 #include <tls.h>
 
-//int proxyAddr[6] = {9993,9994,9995,9996,9997,9998};
-
-//hash function for redevoux hashing
-// unsigned long hash(unsigned char *str)
-// {
-//     unsigned long hash = 5381;
-//     int c;
-
-//     while (c = *str++)
-//         hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
-
-//     return hash;
-// }	
-
-// //weight function for redevoux hashing
-// unsigned long weight(unsigned char *O, unsigned long S){
-//     unsigned long h = 0;
-//     char buf[40];
-//     sprintf(buf, "%d", S);
-    
-//     char combine[40] = "";
-//     strcat(combine, O);
-//     strcat(combine, buf);
-//     //printf("COMBINED: %s\n",combine);
-//     h = hash(combine);
-//     return (h);
-// }
-
-// //function for finding highest weighted string
-// //returns the proxy number
-// //O is "object" or filename 
-// unsigned long proxyNum(unsigned char* O){
-// 	unsigned long proxy[6] = {9993,9994,9995,9996,9997,9998};
-// 	unsigned long maxValue = weight(O, proxy[0]);
-// 	int proxyVal = 0;
-// 	int i = 1;
+// int hash(string Obj){
 	
-// 	for(i = 1; i < 6; i++){
-// 		if(maxValue < weight(O,proxy[i])){
-			
-// 			maxValue = weight(O,proxy[i]);
-// 			printf("Weight: %d\n",maxValue);
-// 			proxyVal = i;
-// 		}
-// 	}
-// return proxy[proxyVal];
+
+// int weight(string O, int S){
+//     int h = 0;
+//     h = hash(O);
+//     return (31 * ((31 * S + 12345) ^ h) + 12345) % (6);
 // }
 
 static void usage()
@@ -73,7 +34,7 @@ static void usage()
 
 int main(int argc, char *argv[])
 {
-	printf("run?");
+	//printf("run?");
 	struct sockaddr_in server_sa;
 	char buffer[80], *ep;
 	size_t maxread;
@@ -101,17 +62,13 @@ int main(int argc, char *argv[])
 		usage();
 	}
 	//added ASSIGN FOR FILENAME
-	unsigned char *filename = argv[3];
-
-// 	printf("WIEGHT: %d\n",weight(filename,9998));
-// 	printf("FILENAME: %s\n", filename);
-// 	printf("PROXY NUM: %d\n", proxyNum(filename));
+	char *filename = argv[3];
 	/* now safe to do this */
 	port = p;
 	//printf(filename);
 	
 	/* set up TLS */
-	printf("setting up TLS");
+	//printf("setting up TLS");
 	if (tls_init() == -1)
 		errx(1, "unable to initialize TLS");
 	if ((tls_cfg = tls_config_new()) == NULL)
@@ -122,7 +79,7 @@ int main(int argc, char *argv[])
 	/*
 	 * first set up "server_sa" to be the location of the server
 	 */
-	printf("setting up server");
+	//printf("setting up server");
 	memset(&server_sa, 0, sizeof(server_sa));
 	server_sa.sin_family = AF_INET;
 	server_sa.sin_port = htons(port);
@@ -174,7 +131,7 @@ int main(int argc, char *argv[])
 	rc = 0;
 	maxread = sizeof(buffer) - 1; /* leave room for a 0 byte */
 	while ((r != 0) && rc < maxread) {
-		printf("reading");
+		//printf("reading");
 		r = tls_write(tls_ctx, buffer + rc, maxread - rc);
 		if (r == TLS_WANT_POLLIN || r == TLS_WANT_POLLOUT)
 			continue;
@@ -188,7 +145,7 @@ int main(int argc, char *argv[])
 	rc = 0;
 	maxread = sizeof(buffer) - 1; /* leave room for a 0 byte */
 	while ((r != 0) && rc < maxread) {
-		printf("reading");
+		//printf("reading");
 		r = tls_read(tls_ctx, buffer + rc, maxread - rc);
 		if (r == TLS_WANT_POLLIN || r == TLS_WANT_POLLOUT)
 			continue;
