@@ -16,14 +16,16 @@
 
 #include <tls.h>
 
+int proxyAddr[6] = {9993,9994,9995,9996,9997,9998};
+
 // int hash(string Obj){
 	
 
-// int weight(string O, int S){
-//     int h = 0;
-//     h = hash(O);
-//     return (31 * ((31 * S + 12345) ^ h) + 12345) % (6);
-// }
+int weight(char *O, int S){
+    int h = 0;
+    h = hash(O);
+    return (31 * ((31 * S + 12345) ^ h) + 12345) % (6);
+}
 
 static void usage()
 {
@@ -63,6 +65,7 @@ int main(int argc, char *argv[])
 	}
 	//added ASSIGN FOR FILENAME
 	char *filename = argv[3];
+	printf(filename);
 	/* now safe to do this */
 	port = p;
 	//printf(filename);
