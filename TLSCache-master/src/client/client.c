@@ -39,7 +39,7 @@ unsigned long weight(unsigned char *O, unsigned long S){
     char combine[40] = "";
     strcat(combine, O);
     strcat(combine, buf);
-    printf("COMBINED: %s\n",combine);
+    //printf("COMBINED: %s\n",combine);
     h = hash(combine);
     return (h);
 }
@@ -55,7 +55,9 @@ unsigned long proxyNum(unsigned char* O){
 	
 	for(i = 1; i < 6; i++){
 		if(maxValue < weight(O,proxy[i])){
+			
 			maxValue = weight(O,proxy[i]);
+			printf("Weight: %d\n",maxValue);
 			proxyVal = i;
 		}
 	}
