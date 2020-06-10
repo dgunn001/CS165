@@ -251,7 +251,7 @@ int main(int argc,  char *argv[])
 			maxread = sizeof(buffer) - 1; /* leave room for a 0 byte */
 			while ((r != 0) && rc < maxread) {
 				//printf("reading");
-				r = tls_read(tls_ctx, buffer + rc, maxread - rc);
+				r = tls_read(tls_sctx, buffer + rc, maxread - rc);
 				if (r == TLS_WANT_POLLIN || r == TLS_WANT_POLLOUT)
 					continue;
 				if (r < 0) {
