@@ -45,5 +45,16 @@ $ ./build/src/client 127.0.0.1 9999
 
 ### Code Added
 --------------------------
+Cilent
+*Added File sending to Proxy
+*Added Rendezvous Hashing
+
+Proxy
+*Create Proxy file
+*Added read and write to client as well as read from server
+*Added two way interfacing. More sockets
+
+Server
+*Added reading from clients
 
 
