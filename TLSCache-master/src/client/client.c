@@ -18,7 +18,7 @@
 
 int proxyAddr[6] = {9993,9994,9995,9996,9997,9998};
 
-//hash function for redevoux hashing
+//hash function for rendezvous hashing
 unsigned long hash(unsigned char *str)
 {
     unsigned long hash = 5381;
@@ -30,7 +30,7 @@ unsigned long hash(unsigned char *str)
     return hash;
 }	
 
-//weight function for redevoux hashing
+//weight function for rendezvous hashing
 unsigned long weight(unsigned char *O, unsigned long S){
     unsigned long h = 0;
     char buf[40];
