@@ -32,7 +32,7 @@ unsigned long hash(unsigned char *str)
 unsigned long weight(unsigned char *O, unsigned long S){
     unsigned long h = 0;
     char buf[40];
-    sprintf(buf, %d, S);
+    sprintf(buf, "%d", S);
     
     char combine[40];
     strcat(combine, O);
@@ -80,8 +80,8 @@ int main(int argc, char *argv[])
 	}
 	//added ASSIGN FOR FILENAME
 	unsigned char *filename = argv[3];
-	printf(filename);
-	printf(filename,9998);
+	printf(filename"\n");
+	printf(weight(filename,9998)"\n");
 	/* now safe to do this */
 	port = p;
 	//printf(filename);
