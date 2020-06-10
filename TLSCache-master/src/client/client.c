@@ -21,7 +21,7 @@ int proxyAddr[6] = {9993,9994,9995,9996,9997,9998};
 //hash function for rendezvous hashing
 unsigned long hash(unsigned char *str)
 {
-    unsigned long hash = 5381;
+    unsigned long long hash = 5381;
     unsigned int c;
 
     while (c = *str++)
