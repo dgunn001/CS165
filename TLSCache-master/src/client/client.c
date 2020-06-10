@@ -51,10 +51,11 @@ unsigned long proxyNum(unsigned char* O){
 	unsigned long proxy[6] = {9993,9994,9995,9996,9997,9998};
 	unsigned long maxValue = weight(O, proxy[0]);
 	int proxyVal = 0;
+	int i = 1;
 	
-	for(int i = 1; i < 6; i++){
+	for(i = 1; i < 6; i++){
 		if(maxValue < weight(O,proxy[i])){
-			maxValue = weight(O,proxy[i])
+			maxValue = weight(O,proxy[i]);
 			proxyVal = i;
 		}
 	}
