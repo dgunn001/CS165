@@ -16,6 +16,15 @@
 
 #include <tls.h>
 
+// int hash(string Obj){
+	
+
+// int weight(string O, int S){
+//     int h = 0;
+//     h = hash(O);
+//     return (31 * ((31 * S + 12345) ^ h) + 12345) % (6);
+// }
+
 static void usage()
 {
 	extern char * __progname;
@@ -114,24 +123,7 @@ int main(int argc, char *argv[])
 	 * we also make sure we handle EINTR in case we got interrupted
 	 * by a signal.
 	 */
-	
-	//ADDED write filename to the proxy
-// 	ssize_t written, w;
-// 			w = 0;
-// 			written = 0;
-// 			while (written < strlen(buffer)) {
-// 				w = tls_write(tls_ctx, buffer + written,
-// 				    strlen(buffer) - written);
-
-// 				if (w == TLS_WANT_POLLIN || w == TLS_WANT_POLLOUT)
-// 					continue;
-
-// 				if (w < 0) {
-// 					errx(1, "TLS write failed (%s)", tls_error(tls_ctx));
-// 				}
-// 				else
-// 					written += w;
-// 			}
+	//write to proxy
 	strncpy(buffer,
 	    filename,
 	    sizeof(buffer));
@@ -148,7 +140,7 @@ int main(int argc, char *argv[])
 		} else
 			rc += r;
 	}
-	
+	//read from proxy
 	r = -1;
 	rc = 0;
 	maxread = sizeof(buffer) - 1; /* leave room for a 0 byte */
