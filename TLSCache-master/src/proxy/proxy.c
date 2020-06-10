@@ -205,9 +205,9 @@ int main(int argc,  char *argv[])
 			//TODO FLITER
 			//TODO CONNECTION TO SERVER	
 			//new TLS for proxy and server
-			if((tls_scfg = tlsconfig_()) == NULL)
+			if((tls_scfg = tls_config_new()) == NULL)
 				errx(1 ," unable to allocate TLS config");
-			if(tls_config_set_ca_file(tls_scfg, "/home/csmajs/dgunn001/CS165/TLSCache-master/certificates/root.pem") == -1_
+			if(tls_config_set_ca_file(tls_scfg, "/home/csmajs/dgunn001/CS165/TLSCache-master/certificates/root.pem") == -1)
 				errx(1, "unable to set root CA file");
 			
 			if((tls_sctx = tls_client()) == NULL)
