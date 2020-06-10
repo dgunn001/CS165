@@ -16,7 +16,7 @@
 
 #include <tls.h>
 
-int proxyAddr[6] = {9993,9994,9995,9996,9997,9998};
+//int proxyAddr[6] = {9993,9994,9995,9996,9997,9998};
 
 //hash function for redevoux hashing
 // unsigned long hash(unsigned char *str)
@@ -73,7 +73,7 @@ static void usage()
 
 int main(int argc, char *argv[])
 {
-	//printf("run?");
+	printf("run?");
 	struct sockaddr_in server_sa;
 	char buffer[80], *ep;
 	size_t maxread;
