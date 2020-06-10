@@ -87,7 +87,7 @@ int main(int argc,  char *argv[])
 
 	/* the message we send the client */
 	strncpy(buffer,
-	    "It was the best of times, it was the worst of times... \n",
+	    "It was the worst of times, and it only got worse... \n",
 	    sizeof(buffer));
 
 	
