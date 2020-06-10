@@ -37,7 +37,7 @@ unsigned long weight(unsigned char *O, unsigned long S){
     char combine[40];
     strcat(combine, O);
     strcat(combine, buf);
-    //printf(combine);
+    printf("COMBINED: %s\n",combine);
     h = hash(combine);
     return (h);
 }
