@@ -41,6 +41,7 @@ int main(int argc,  char *argv[])
 	u_long p;
 	u_long sp;
 	struct tls_config *tls_cfg = NULL; // TLS config
+	struct tls_config *tls_scfg = NULL; //TLS server config
 	struct tls *tls_ctx = NULL; // TLS context
 	struct tls *tls_cctx = NULL; // client's TLS context
 	struct tls *tls_sctx = NULL; // server's TLS context
@@ -202,50 +203,36 @@ int main(int argc,  char *argv[])
 			
 
 			//TODO FLITER
-				/*
-			 * first set up "server_sa" to be the location of the server
-	 		*/
-// 			if ((tls_ctx = tls_server()) == NULL)
-// 				errx(1, "TLS server creation failed");
-// 			if (tls_init() == -1)
-// 				errx(1, "unable to initialize TLS");
-// 			if ((tls_cfg = tls_config_new()) == NULL)
-// 				errx(1, "unable to allocate TLS config");
-// 			if (tls_config_set_ca_file(tls_cfg, "/home/csmajs/dgunn001/CS165/TLSCache-master/certificates/root.pem") == -1)
-// 				errx(1, "unable to set root CA file");
+			//TODO CONNECTION TO SERVER	
+			//new TLS for proxy and server
+			if((tls_scfg = tlsconfig_()) == NULL)
+				errx(1 ," unable to allocate TLS config");
+			if(tls_config_set_ca_file(tls_scfg, "/home/csmajs/dgunn001/CS165/TLSCache-master/certificates/root.pem") == -1_
+				errx(1, "unable to set root CA file");
 			
-			
-			memset(&server_sa, 0, sizeof(server_sa));
+			if((tls_sctx = tls_client()) == NULL)
+				errx(1, "tls client creation failed");
+			if(tls_configure(tls_sctx, tls_scfg) == -1){
+				errx(1, "tls configureation failed (%s)" , tls_error(tls_sctx);
+			   
+			 memset(&server_sa, 0, sizeof(server_sa));
 			server_sa.sin_family = AF_INET;
 			server_sa.sin_port = htons(serverport);
-			server_sa.sin_addr.s_addr = inet_addr(argv[2]);
-			if (server_sa.sin_addr.s_addr == INADDR_NONE) {
-				fprintf(stderr, "Invalid IP address %s\n", argv[2]);
-				usage();
-			}
-			if ((sd=socket(AF_INET,SOCK_STREAM,0)) == -1)
-				err(1, "socket failed");
-
-			/* connect the socket to the server described in "server_sa" */
-			printf(argv[2]);
-			if (connect(sd, (struct sockaddr *)&server_sa, sizeof(server_sa)) == -1)
-				err(1, "connect failed");
-
-			if ((tls_sctx = tls_client()) == NULL)
-				errx(1, "tls client creation failed");
-			if (tls_configure(tls_sctx, tls_cfg) == -1)
-				errx(1, "tls configuration failed (%s)", tls_error(tls_sctx));
-			if (tls_connect_socket(tls_sctx, sd, "localhost") == -1)
-				errx(1, "tls connection failed (%s)", tls_error(tls_sctx));
-
-
-			do {
-				if ((i = tls_handshake(tls_sctx)) == -1)
-					errx(1, "tls handshake failed (%s)", tls_error(tls_sctx));
-			} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
-			close(sdd);	
-			//TODO CONNECTION TO SERVER
+			server_sa.sin_addr.s_addr = htonl(INADDR_ANY);
+			ssd=socket(AF_INET,SOCK_STREAM,0);  
 			
+		`	if(connect(ssd, (struct sockaddr*)&server_sa, sizeof(server_sa)) == - 1)
+				     errx(1, "server connect failed");
+			if(tls_connect_socket(tls_sctx,ssd,"localhost") == -1)
+				     errx(1, "tls connection failed(%s)", tls_error(tls_sctx);
+					  
+			do{
+				if((i = tls_handshake(tls_sctx)) == -1)
+					errx(1, "tls handshake failed (%s)" , tls_error(tls_sctx);
+			}while (i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
+			
+			close(ssd);		     
+				     
 			/*
 			 * write the message to the client, being sure to
 			 * handle a short write, or being interrupted by
