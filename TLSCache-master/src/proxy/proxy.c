@@ -33,7 +33,7 @@ int main(int argc,  char *argv[])
 	char buffer[80], *ep;
 	size_t maxread;
 	struct sigaction sa;
-	int sd, i, sdd;
+	int sd, i, ssd;
 	socklen_t clientlen;
 	u_short port;
 	u_short serverport;
