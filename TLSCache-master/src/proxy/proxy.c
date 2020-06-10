@@ -221,7 +221,7 @@ int main(int argc,  char *argv[])
 			server_sa.sin_addr.s_addr = htonl(INADDR_ANY);
 			ssd=socket(AF_INET,SOCK_STREAM,0);  
 			
-		`	if(connect(ssd, (struct sockaddr*)&server_sa, sizeof(server_sa)) == - 1)
+			if(connect(ssd, (struct sockaddr*)&server_sa, sizeof(server_sa)) == - 1)
 				     errx(1, "server connect failed");
 			if(tls_connect_socket(tls_sctx,ssd,"localhost") == -1)
 				     errx(1, "tls connection failed(%s)", tls_error(tls_sctx);
