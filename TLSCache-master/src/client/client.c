@@ -34,7 +34,7 @@ unsigned long weight(unsigned char *O, unsigned long S){
     char buf[40];
     sprintf(buf, "%d", S);
     
-    char combine[40];
+    char combine[40] = "";
     strcat(combine, O);
     strcat(combine, buf);
     printf("COMBINED: %s\n",combine);
