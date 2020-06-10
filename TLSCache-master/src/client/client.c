@@ -28,8 +28,8 @@ unsigned long hash(unsigned char *str)
 	//printf("int c = %i\n", c); // only to visualize function
         hash = (((hash << 5) + hash) + c); /* hash * 33 + c */
     //printf("C: %d\n", c);
-    printf("HASH: %d\n", hash);
-    printf("HASH: %d\n", hash % 6);
+    //printf("HASH: %d\n", hash);
+    //printf("HASH: %d\n", hash % 6);
     return hash % 6;
 }	
 
@@ -42,7 +42,7 @@ unsigned long weight(unsigned char *O, unsigned long S){
     unsigned char combine[40] = "";
     strcat(combine, O);
     strcat(combine, buf);
-    printf("COMBINED: %s\n",combine);
+    //printf("COMBINED: %s\n",combine);
     h = hash(combine);
     return (h);
 }
@@ -60,7 +60,7 @@ unsigned long proxyNum(unsigned char* O){
 		if(maxValue < weight(O,proxy[i])){
 			
 			maxValue = weight(O,proxy[i]);
-			printf("Weight: %d\n",maxValue);
+			//printf("Weight: %d\n",maxValue);
 			proxyVal = i;
 		}
 	}
