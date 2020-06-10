@@ -39,7 +39,7 @@ unsigned long weight(unsigned char *O, unsigned long S){
     strcat(combine, buf);
     printf(combine);
     h = hash(combine);
-    return (h % 6);
+    return (h);
 }
 
 static void usage()
@@ -80,8 +80,8 @@ int main(int argc, char *argv[])
 	}
 	//added ASSIGN FOR FILENAME
 	unsigned char *filename = argv[3];
-	printf(filename);
-	printf("%d\n",weight(filename,9998));
+	printf("FILENAME: %s\n", filename);
+	printf("WIEGHT: %d\n",weight(filename,9998));
 	/* now safe to do this */
 	port = p;
 	//printf(filename);
