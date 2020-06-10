@@ -213,7 +213,7 @@ int main(int argc,  char *argv[])
 			if((tls_sctx = tls_client()) == NULL)
 				errx(1, "tls client creation failed");
 			if(tls_configure(tls_sctx, tls_scfg) == -1){
-				errx(1, "tls configureation failed (%s)" , tls_error(tls_sctx);
+				errx(1, "tls configureation failed (%s)" , tls_error(tls_sctx));
 			   
 			 memset(&server_sa, 0, sizeof(server_sa));
 			server_sa.sin_family = AF_INET;
@@ -229,7 +229,7 @@ int main(int argc,  char *argv[])
 			do{
 				if((i = tls_handshake(tls_sctx)) == -1)
 					errx(1, "tls handshake failed (%s)" , tls_error(tls_sctx);
-			}while (i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
+			} while (i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
 			
 			close(ssd);		     
 				     
