@@ -36,7 +36,7 @@ $ ./build/src/server 9993-8
 
 
 Run the client (in another terminal):
-$ ./build/src/client 127.0.0.1 9999
+$ ./build/src/client 127.0.0.1 9998
 ```
 ### Scripts included
 --------------------------
