@@ -34,10 +34,10 @@ unsigned long hash(unsigned char *str)
 //weight function for rendezvous hashing
 unsigned long weight(unsigned char *O, unsigned long S){
     unsigned long h = 0;
-    char buf[40];
+    unsigned char buf[40];
     sprintf(buf, "%d", S);
     
-    char combine[40] = "";
+    unsigned char combine[40] = "";
     strcat(combine, O);
     strcat(combine, buf);
     printf("COMBINED: %s\n",combine);
