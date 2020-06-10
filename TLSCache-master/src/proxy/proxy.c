@@ -228,7 +228,7 @@ int main(int argc,  char *argv[])
 					  
 			do{
 				if((i = tls_handshake(tls_sctx)) == -1)
-					errx(1, "tls handshake failed (%s)" , tls_error(tls_sctx);
+					errx(1, "tls handshake failed (%s)" , tls_error(tls_sctx));
 			} while (i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
 			
 			close(ssd);		     
