@@ -18,6 +18,7 @@
 
 int proxyAddr[6] = {9993,9994,9995,9996,9997,9998};
 
+//hash function for redevoux hashing
 unsigned long hash(unsigned char *str)
 {
     unsigned long hash = 5381;
@@ -29,6 +30,7 @@ unsigned long hash(unsigned char *str)
     return hash;
 }	
 
+//weight function for redevoux hashing
 unsigned long weight(unsigned char *O, unsigned long S){
     unsigned long h = 0;
     char buf[40];
@@ -40,6 +42,23 @@ unsigned long weight(unsigned char *O, unsigned long S){
     printf("COMBINED: %s\n",combine);
     h = hash(combine);
     return (h);
+}
+
+//function for finding highest weighted string
+//returns the proxy number
+//O is "object" or filename 
+unsigned long proxyNum(unsigned char* O){
+	unsigned long proxy[6] = {9993,9994,9995,9996,9997,9998};
+	unsigned long maxValue = weight(O, proxy[0]);
+	int proxyVal = 0;
+	
+	for(int i = 1; i < 6; i++){
+		if(maxValue < weight(O,proxy[i])){
+			maxValue = weight(O,proxy[i])
+			proxyVal = i;
+		}
+	}
+return proxy[proxyVal];
 }
 
 static void usage()
