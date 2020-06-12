@@ -184,7 +184,7 @@ void *threadFunc(){
 // 			printf(" to the client\n");
 			
 			//create bloom fliter
-			char* tempStr;
+			char tempStr[80];
 			strncpy(tempStr,
 	    			buffer,
 	    		sizeof(buffer));
