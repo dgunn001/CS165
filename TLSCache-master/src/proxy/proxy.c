@@ -355,9 +355,9 @@ int main(int argc,  char *argv[])
 		errx(1, "TLS configuration failed (%s)", tls_error(tls_ctx));
 
 	/* the message we send the client */
-	strncpy(buffer,
-	    "It was the best of times, it was the worst of times... \n",
-	    sizeof(buffer));
+// 	strncpy(buffer,
+// 	    "It was the best of times, it was the worst of times... \n",
+// 	    sizeof(buffer));
 
 	
 	memset(&sockname, 0, sizeof(sockname));
