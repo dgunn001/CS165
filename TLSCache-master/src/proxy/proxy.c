@@ -105,7 +105,7 @@ int bloom_query (char* bloom, const char* buffer){
 	len = strlen(buffer);
 	a = murmurhash2(buffer, len, 17);
 	b = FNVHash(buffer, len);
-	printf("Bloom Query Values: %d %d\n",a,b);
+	printf("query: %d %d\n",a,b);
 	i = 1 & (bloom[a / 8] >> (a % 8));
 	//printf("%d\n", i);
 	if( (1 & (bloom[a / 8] >> (a % 8) )) && (1 & (bloom[b / 8] >> (b % 8) ) )){
@@ -122,7 +122,7 @@ int bloom_insert (char* bloom, const char* buffer){
 	len = strlen(buffer);
 	a = murmurhash2(buffer, len, 17);
 	b = FNVHash(buffer, len);
-	printf("Inserting new Bloom values: %d %d\n",a,b);
+	printf("insert: %d %d\n",a,b);
 	bloom[a / 8] ^= 1 << (a % 8 );
 	bloom[b / 8] ^= 1 << (b % 8 );
 	i = 1 & (bloom[a / 8] >> (a % 8));
@@ -150,6 +150,8 @@ void *threadFunc(){
 		 * time.
 		*/
 	pthread_mutex_lock(&lock);
+	printf("\n%d\n",t);
+	t++;
 			ssize_t written, w,r ,rc;
 
 			i = 0;
@@ -411,7 +413,11 @@ int main(int argc,  char *argv[])
 		if (clientsd == -1)
 			err(1, "accept failed");
 	while(clientsd = accept(sd, (struct sockaddr *)&client, &clientlen)) {
+		printf("connection accepted\n");
 		void *ret;
+		int i;
+		printf("%d\n", i);
+		i++;
 		pthread_t tid;
 		pthread_create(&tid, NULL, threadFunc, (void*) &tid);
 	}
