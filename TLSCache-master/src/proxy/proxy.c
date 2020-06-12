@@ -76,18 +76,18 @@ unsigned int FNVHash(const char* str, unsigned int length) {
 }
 
 void ClearBit(int arr[],unsigned int k){
-	A[k/32] &= ~(1 << (k%32));
+	arr[k/32] &= ~(1 << (k%32));
 	
 }
 
 void SetBit(int arr[], unsigned int k){
-	A[k/32] |= 1 << (k%32);
+	arr[k/32] |= 1 << (k%32);
 }
 
 void bloom_init (struct bloom * bloom) {
 	unsigned int i;
 	for(i = 0; i < 16; i++){
-		ClearBit(bloom->bitVector[], i);
+		ClearBit(bloom->bitVector, i);
 	}
 }
 
