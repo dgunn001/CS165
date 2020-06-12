@@ -291,7 +291,7 @@ int main(int argc,  char *argv[])
 			
 			//create bloom fliter
 			fileLen = strlen(buffer);
-			if(bloom_query(bloom, buffer){
+			if(bloom_query(bloom, buffer)){
 				printf("sending contents of %s to the client", buffer);
 			} else {
 				bloom_insert(bloom, buffer);
