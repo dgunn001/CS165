@@ -16,7 +16,7 @@
 #include <tls.h>
 
 struct bloom {
- int bitVector[20] = {0,0,0,0,0 ,0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0};
+ int bitVector[20];
 };
 
 unsigned int murmur_32_scramble(unsigned int k) {
@@ -77,7 +77,7 @@ unsigned int FNVHash(const char* str, unsigned int length) {
 
 void bloom_init (struct bloom * bloom) {
 	unsigned int i;
-	for(i = 0; i < 20; i++){
+	for(i = 0; i < 19; i++){
 		bloom->bitVector[i] = 0;
 	}
 }
