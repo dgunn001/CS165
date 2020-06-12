@@ -16,10 +16,12 @@
 
 #include <tls.h>
 
+
+
 struct bloom {
 	int bits;
 };
-
+	pthread_mutex_t lock;
 	struct sockaddr_in sockname, server_sa;
 	char buffer[80], *ep;
 	size_t maxread;
@@ -142,6 +144,7 @@ static void kidhandler(int signum) {
 }
 
 void *threadFunc(){
+		pthread_mutex_lock(&lock);
 		struct sockaddr_in client;
 		int clientsd;
 		clientlen = sizeof(&client);
@@ -293,13 +296,17 @@ void *threadFunc(){
 			do {
 				i = tls_close(tls_cctx);
 			} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
-
+			
 			close(clientsd);
+	pthread_mutex_unlock(&lock);
 }
 
 int main(int argc,  char *argv[])
 {
-	
+	if(pthread_mutex_init(&lock, NULL) !=0){
+		printf("\n mutex init has failed\n);
+		       return 1;
+	}
 	/*
 	 * first, figure out what port we will listen on - it should
 	 * be our first parameter.
