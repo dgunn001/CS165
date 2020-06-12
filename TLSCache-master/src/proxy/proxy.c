@@ -14,7 +14,21 @@
 
 #include <tls.h>
 
-int bitVector[20] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+struct bloom {
+	int bitVector[20] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};	
+}
+
+int insert(struct bloom * bloom, char* buffer, int fileLen){
+		unsigned int bloomBit1, bloomBit2;
+		bloomBit1 = FNVHash(buffer, fileLen);
+		bloomBit2 = murmur3_32(buffer, fileLen, 17);
+		printf("Bloom bit locations: %d %d \n", bloomBit1, bloomBit2);
+		bloom->bitVector[bloomBit1] = 1;
+		bloom->bitVector[bloomBit2] = 1;
+		return 1;
+}
+
+
 
 unsigned int murmur_32_scramble(unsigned int k) {
     k *= 0xcc9e2d51;
@@ -93,6 +107,7 @@ int main(int argc,  char *argv[])
 	struct sigaction sa;
 	int serverCall[1] = {0};
 	int sd, i, ssd;
+	struct bloom;
 	unsigned int fileLen;
 	socklen_t clientlen;
 	u_short port;
@@ -260,24 +275,26 @@ int main(int argc,  char *argv[])
 			
 			//create bloom fliter
 			fileLen = strlen(buffer);
-			unsigned int bloomBit1, bloomBit2;
-			bloomBit1 = FNVHash(buffer, fileLen);
-			bloomBit2 = murmur3_32(buffer, fileLen, 17);
-			printf("Bloom bit locations: %d %d \n", bloomBit1, bloomBit2);
+			//unsigned int bloomBit1, bloomBit2;
+			if(insert(bloom, buffer, fileLen)){
+			} else {
+				printf("fail to insert\n");
+			}
+
 			for(i = 0; i <20 ; i++){
 				printf("%d",bitVector[i]);
 			}
-			if (bitVector[bloomBit1] && bitVector[bloomBit2]){
-				printf("\nfile maybe in cache\n");
-			} else {
-				printf("\nfile not here, retreive from server\n");
-				serverCall[0] = 1;
-				bitVector[bloomBit1] = 1;
-				bitVector[bloomBit2] = 1;
-							for(i = 0; i <20 ; i++){
-				printf("%d",bitVector[i]);
-			}
-			}
+// 			if (bitVector[bloomBit1] && bitVector[bloomBit2]){
+// 				printf("\nfile maybe in cache\n");
+// 			} else {
+// 				printf("\nfile not here, retreive from server\n");
+// 				serverCall[0] = 1;
+// 				bitVector[bloomBit1] = 1;
+// 				bitVector[bloomBit2] = 1;
+// 							for(i = 0; i <20 ; i++){
+// 				printf("%d",bitVector[i]);
+// 			}
+// 			}
 				
 				
 
