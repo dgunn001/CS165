@@ -176,8 +176,8 @@ int main(int argc,  char *argv[])
 				} else
 					rc += r;
 			}
-			
-			
+			//TODO FLITER
+				
 			//TODO CONNECTION TO SERVER
 			
 			/*
@@ -186,12 +186,10 @@ int main(int argc,  char *argv[])
 			 * a signal before we could write anything.
 			 */
 				/* the message we send the client */
-			char temp[80];
-			strncpy(temp, buffer, sizeof(temp));	
+			
 			strncpy(buffer,
-				    "The contents  of file ",
+				    "The contents of this file\n",
 				    sizeof(buffer));
-			strcat(buffer,temp);
 
 			w = 0;
 			written = 0;
