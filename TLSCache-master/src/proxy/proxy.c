@@ -262,9 +262,9 @@ void *threadFunc(){
 			 */
 			buffer[rc] = '\0';
 			if(boolCache == 1){
-			printf("IN CACHE Proxy sent:  contents of %s\n",buffer);
+			printf("IN CACHE Proxy sent: contents of %s\n\n",buffer);
 			} else {
-			printf("Server sent:  contents of %s\n",buffer);
+			printf("Server sent: contents of %s\n\n",buffer);
 			}
 			close(ssd);		     
 				     
