@@ -57,10 +57,10 @@ static int bloom_check_add(struct bloom * bloom,
   }
 
   int hits = 0;
-  register unsigned int a = murmurhash2(buffer, len, 0x9747b28c);
-  register unsigned int b = murmurhash2(buffer, len, a);
-  register unsigned int x;
-  register unsigned int i;
+  unsigned int a = murmurhash2(buffer, len, 0x9747b28c);
+  unsigned int b = murmurhash2(buffer, len, a);
+  unsigned int x;
+  unsigned int i;
 
   for (i = 0; i < bloom->hashes; i++) {
     x = (a + i*b) % bloom->bits;
@@ -212,7 +212,7 @@ int main(int argc,  char *argv[])
 	struct sigaction sa;
 	int serverCall[1] = {0};
 	int sd, i, ssd;
-	struct bloom bloom;
+	struct bloom *bloom;
 	unsigned int fileLen;
 	socklen_t clientlen;
 	u_short port;
