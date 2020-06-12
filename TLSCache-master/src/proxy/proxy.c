@@ -217,8 +217,8 @@ int main(int argc,  char *argv[])
 			//create bloom fliter
 			fileLen = strlen(buffer);
 			unsigned int bloomBit1, bloomBit2;
-			bloomBit1 = FNVHASH(buffer, fileLen);
-			bloomBit2 = FNVHASH(buffer, fileLen);
+			bloomBit1 = FNVHash(buffer, fileLen);
+			bloomBit2 = FNVHash(buffer, fileLen);
 			
 			
 				
