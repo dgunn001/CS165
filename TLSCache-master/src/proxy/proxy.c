@@ -28,7 +28,7 @@ int entries;
   double bpe;
   unsigned char * bf;
   int ready;
-}
+};
 
 
 
@@ -197,7 +197,7 @@ int main(int argc,  char *argv[])
 	struct sigaction sa;
 	int serverCall[1] = {0};
 	int sd, i, ssd;
-	struct bloom;
+	struct bloom bloom;
 	unsigned int fileLen;
 	socklen_t clientlen;
 	u_short port;
@@ -366,7 +366,7 @@ int main(int argc,  char *argv[])
 			//create bloom fliter
 			fileLen = strlen(buffer);
 			//unsigned int bloomBit1, bloomBit2;
-			if(insert(bloom, buffer, fileLen)){
+			if(add(bloom, buffer, fileLen)){
 			} else {
 				printf("fail to insert\n");
 			}
