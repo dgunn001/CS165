@@ -404,6 +404,9 @@ int main(int argc,  char *argv[])
 	
 	for(;;) {
 		void *ret;
+		int i;
+		printf("%d\n", i);
+		i++;
 		pthread_t tid;
 		pthread_create(&tid, NULL, threadFunc, (void*) &tid);
 		pthread_join(tid, &ret);
