@@ -206,7 +206,7 @@ int main(int argc, char *argv[])
 	 */
 	buffer[rc] = '\0';
 
-	printf("Server sent:  %s",buffer);
+	printf("Server sent: %s\n",buffer);
 	close(sd);
 	return(0);
 }
