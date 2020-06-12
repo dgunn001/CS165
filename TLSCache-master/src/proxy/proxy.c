@@ -11,11 +11,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <math.h>
 
 #include <tls.h>
 
 struct bloom {
-	int entries;
+int entries;
   double error;
   int bits;
   int bytes;
@@ -29,7 +30,7 @@ struct bloom {
   int ready;
 }
 
-inline static int test_bit_set_bit(unsigned char * buf,
+static int test_bit_set_bit(unsigned char * buf,
                                    unsigned int x, int set_bit)
 {
   unsigned int byte = x >> 3;
