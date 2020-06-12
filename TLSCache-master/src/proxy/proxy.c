@@ -304,7 +304,7 @@ void *threadFunc(){
 int main(int argc,  char *argv[])
 {
 	if(pthread_mutex_init(&lock, NULL) !=0){
-		printf("\n mutex init has failed\n);
+		printf("\n mutex init has failed\n");
 		       return 1;
 	}
 	/*
