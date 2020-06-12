@@ -403,9 +403,11 @@ int main(int argc,  char *argv[])
 	printf("Proxy up and listening for connections on port %u\n", port);
 	
 	for(;;) {
+		void *ret;
 		pthread_t tid;
 		pthread_create(&tid, NULL, threadFunc, (void*) &tid);
-		//pthread_exit(NULL);
+		pthread_join(tid, &ret);
+		pthread_exit(NULL);
 	}
 
 }
