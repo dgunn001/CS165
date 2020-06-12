@@ -295,8 +295,6 @@ void *threadFunc(){
 			} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
 
 			close(clientsd);
-		}
-		close(clientsd);
 }
 
 int main(int argc,  char *argv[])
