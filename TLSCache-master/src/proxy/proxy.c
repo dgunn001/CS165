@@ -97,7 +97,8 @@ int bloom_insert (char* bloom, const char* buffer){
 	printf("insert: %d %d\n",a,b);
 	bloom[a / 8] ^= 1 << (a & 8 );
 	bloom[b / 8] ^= 1 << (b & 8 );
-	
+	i = 1 & (bloom[a / 8] >> (a % 8));
+	printf("%d\n", i);
 	return 1;
 
 }
