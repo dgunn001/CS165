@@ -265,12 +265,12 @@ int main(int argc,  char *argv[])
 			bloomBit2 = murmur3_32(buffer, fileLen, 17);
 			printf("Bloom bit locations: %d %d \n", bloomBit1, bloomBit2);
 			for(i = 0; i <20 ; i++){
-				printf(bitVector[i]);
+				printf("%d",bitVector[i]);
 			}
 			if (bitVector[bloomBit1] && bitVector[bloomBit2]){
-				printf("file maybe in cache\n");
+				printf("\nfile maybe in cache\n");
 			} else {
-				printf("file not here, retreive from server\n");
+				printf("\nfile not here, retreive from server\n");
 				serverCall[0] = 1;
 				bitVector[bloomBit1] = 1;
 				bitVector[bloomBit2] = 1;
