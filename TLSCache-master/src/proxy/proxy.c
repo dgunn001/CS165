@@ -15,10 +15,6 @@
 
 #include <tls.h>
 
-struct bloom {
-  int bitVector[16];	
-};
-
 unsigned int murmur_32_scramble(unsigned int k) {
     k *= 0xcc9e2d51;
     k = (k << 15) | (k >> 17);
@@ -75,17 +71,30 @@ unsigned int FNVHash(const char* str, unsigned int length) {
 	return hash % 16;
 }
 
-void bloom_init (struct bloom * bloom){
-	bloom->bitVector[0] = 0;
-	
-}	
-
-int bloom_insert (struct bloom * bloom, const char* buffer){
+int bloom_query (char* bloom, const char* buffer){
 	unsigned int a,b,len,i;
 	len = strlen(buffer);
 	a = murmurhash2(buffer, len, 17);
 	b = FNVHash(buffer, len);
-	printf("%d %d\n",a,b);
+	printf("query: %d %d\n",a,b);
+	if((1 & (bloom[a / 8] >> (a % 8))) && (1 & (bloom[b / 8] >> (b % 8))){
+		printf("file might be cached\n");
+	} else {
+		printf("file not cached reciving from server\n");
+	}
+	return 1;
+}	
+
+int bloom_insert (char* bloom, const char* buffer){
+	unsigned int a,b,len,i;
+	len = strlen(buffer);
+	a = murmurhash2(buffer, len, 17);
+	b = FNVHash(buffer, len);
+	printf("insert: %d %d\n",a,b);
+	bloom[a / 8] ^= 1 << (a & 8 );
+	bloom[b / 8] ^= 1 << (b & 8 );
+	
+	return 1;
 
 }
 
@@ -110,7 +119,7 @@ int main(int argc,  char *argv[])
 	struct sigaction sa;
 	int serverCall[1] = {0};
 	int sd, i, ssd;
-	struct bloom *bloom;
+	char bloom[40] = {0};
 	unsigned int fileLen;
 	socklen_t clientlen;
 	u_short port;
@@ -124,7 +133,7 @@ int main(int argc,  char *argv[])
 	struct tls *tls_cctx = NULL; // client's TLS context
 	struct tls *tls_sctx = NULL; // server's TLS context
 	
-	bloom_init(bloom);
+	
 	/*
 	 * first, figure out what port we will listen on - it should
 	 * be our first parameter.
