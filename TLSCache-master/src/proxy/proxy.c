@@ -31,6 +31,62 @@ int entries;
 };
 
 
+unsigned int murmur_32_scramble(unsigned int k) {
+    k *= 0xcc9e2d51;
+    k = (k << 15) | (k >> 17);
+    k *= 0x1b873593;
+    return k;
+}
+unsigned int murmurhash2(char* key, size_t len, unsigned int seed)
+{
+	unsigned int h = seed;
+    unsigned int k;
+    /* Read in groups of 4. */
+	size_t i;
+    for (i = len >> 2; i; i--) {
+        // Here is a source of differing results across endiannesses.
+        // A swap here has no effects on hash properties though.
+        memcpy(&k, key, sizeof(unsigned int));
+        key += sizeof(unsigned int);
+        h ^= murmur_32_scramble(k);
+        h = (h << 13) | (h >> 19);
+        h = h * 5 + 0xe6546b64;
+    }
+    /* Read the rest. */
+    k = 0;
+	
+    for (i = len & 3; i; i--) {
+        k <<= 8;
+        k |= key[i - 1];
+    }
+    // A swap is *not* necessary here because the preceding loop already
+    // places the low bytes in the low places according to whatever endianness
+    // we use. Swaps only apply when the memory is copied in a chunk.
+    h ^= murmur_32_scramble(k);
+    /* Finalize. */
+	h ^= len;
+	h ^= h >> 16;
+	h *= 0x85ebca6b;
+	h ^= h >> 13;
+	h *= 0xc2b2ae35;
+	h ^= h >> 16;
+	return h % 20;
+}
+
+unsigned int FNVHash(char* str, unsigned int length) {
+	const unsigned int fnv_prime = 0x811C9DC5;
+	unsigned int hash = 0;
+	unsigned int i = 0;
+
+	for (i = 0; i < length; str++, i++)
+	{
+		hash *= fnv_prime;
+		hash ^= (*str);
+	}
+
+	return hash % 20;
+}
+
 inline static int test_bit_set_bit(unsigned char * buf,
                                    unsigned int x, int set_bit)
 {
@@ -58,7 +114,7 @@ static int bloom_check_add(struct bloom * bloom,
 
   int hits = 0;
   unsigned int a = murmurhash2(buffer, len, 0x9747b28c);
-  unsigned int b = murmurhash2(buffer, len, a);
+  unsigned int b = FNVHash(buffer, len);
   unsigned int x;
   unsigned int i;
 
@@ -135,61 +191,6 @@ int bloom_add(struct bloom * bloom, const void * buffer, int len)
 }
 
 
-unsigned int murmur_32_scramble(unsigned int k) {
-    k *= 0xcc9e2d51;
-    k = (k << 15) | (k >> 17);
-    k *= 0x1b873593;
-    return k;
-}
-unsigned int murmurhash2(char* key, size_t len, unsigned int seed)
-{
-	unsigned int h = seed;
-    unsigned int k;
-    /* Read in groups of 4. */
-	size_t i;
-    for (i = len >> 2; i; i--) {
-        // Here is a source of differing results across endiannesses.
-        // A swap here has no effects on hash properties though.
-        memcpy(&k, key, sizeof(unsigned int));
-        key += sizeof(unsigned int);
-        h ^= murmur_32_scramble(k);
-        h = (h << 13) | (h >> 19);
-        h = h * 5 + 0xe6546b64;
-    }
-    /* Read the rest. */
-    k = 0;
-	
-    for (i = len & 3; i; i--) {
-        k <<= 8;
-        k |= key[i - 1];
-    }
-    // A swap is *not* necessary here because the preceding loop already
-    // places the low bytes in the low places according to whatever endianness
-    // we use. Swaps only apply when the memory is copied in a chunk.
-    h ^= murmur_32_scramble(k);
-    /* Finalize. */
-	h ^= len;
-	h ^= h >> 16;
-	h *= 0x85ebca6b;
-	h ^= h >> 13;
-	h *= 0xc2b2ae35;
-	h ^= h >> 16;
-	return h % 20;
-}
-
-unsigned int FNVHash(char* str, unsigned int length) {
-	const unsigned int fnv_prime = 0x811C9DC5;
-	unsigned int hash = 0;
-	unsigned int i = 0;
-
-	for (i = 0; i < length; str++, i++)
-	{
-		hash *= fnv_prime;
-		hash ^= (*str);
-	}
-
-	return hash % 20;
-}
 
 static void usage()
 {
