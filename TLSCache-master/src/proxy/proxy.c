@@ -22,7 +22,7 @@ unsigned int murmur_32_scramble(unsigned int k) {
     k *= 0x1b873593;
     return k;
 }
-unsigned int murmur3_32(const unsigned int* key, size_t len, unsigned int seed)
+unsigned int murmur3_32(const unsigned int key, size_t len, unsigned int seed)
 {
 	unsigned int h = seed;
     unsigned int k;
