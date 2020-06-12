@@ -27,7 +27,7 @@ struct bloom {
 	size_t maxread;
 	struct sigaction sa;
 	int serverCall[1] = {0};
-	int sd, i, ssd;
+	int sd, i, ssd,t;
 	char bloom[40] = {0};
 	unsigned int fileLen;
 	socklen_t clientlen;
@@ -149,7 +149,7 @@ void *threadFunc(){
 		int clientsd;
 		clientlen = sizeof(&client);
 		clientsd = accept(sd, (struct sockaddr *)&client, &clientlen);
-		
+		printf("\n%d\n",t);
 		if (clientsd == -1)
 			err(1, "accept failed");
 		/*
