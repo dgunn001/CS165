@@ -188,7 +188,7 @@ int main(int argc,  char *argv[])
 				/* the message we send the client */
 			
 			strncpy(buffer,
-				    "The contents file: \n",
+				    "The contents  of file: ",
 				    sizeof(buffer));
 
 			w = 0;
