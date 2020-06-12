@@ -291,8 +291,13 @@ int main(int argc,  char *argv[])
 			
 			//create bloom fliter
 			fileLen = strlen(buffer);
-			bloom_insert(bloom, buffer);
-			//unsigned int bloomBit1, bloomBit2;
+			if(bloom_query(bloom, buffer){
+				printf("sending contents of %s to the client", buffer);
+			} else {
+				bloom_insert(bloom, buffer);
+				printf("retrieving contents of %s from server then string to client", buffer);
+			}
+				//unsigned int bloomBit1, bloomBit2;
 // 			if(bloom_add(bloom, buffer, fileLen)){
 // 			} else {
 // 				printf("fail to insert\n");
