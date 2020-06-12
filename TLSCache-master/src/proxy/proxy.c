@@ -16,7 +16,7 @@
 #include <tls.h>
 
 struct bloom {
- int bitVector[20];
+ int bitVector[20] = {0,0,0,0,0 ,0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0};
 };
 
 unsigned int murmur_32_scramble(unsigned int k) {
