@@ -55,6 +55,10 @@ Proxy
 *Create Proxy file
 *Added read and write to client as well as read from server
 *Added two way interfacing. More sockets
+*Create struct for BloomFliter and its BitVector
+*added more hash functions for the bloom filter
+*add insert and query functions for the bloom 
+*ignored cache and bloom memory management
 ```
 Server
 ```
