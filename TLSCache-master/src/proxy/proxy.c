@@ -286,7 +286,7 @@ int main(int argc,  char *argv[])
 			
 			//create bloom fliter
 			fileLen = strlen(buffer);
-			bloom_insert(filename);
+			bloom_insert(buffer);
 			//unsigned int bloomBit1, bloomBit2;
 // 			if(bloom_add(bloom, buffer, fileLen)){
 // 			} else {
