@@ -184,10 +184,6 @@ int main(int argc,  char *argv[])
 			 * a signal before we could write anything.
 			 */
 				/* the message we send the client */
-			
-			strncpy(buffer,
-				    strrev(buffer),
-				    sizeof(buffer));
 
 			w = 0;
 			written = 0;
