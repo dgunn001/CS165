@@ -78,6 +78,8 @@ int bloom_query (char* bloom, const char* buffer){
 	a = murmurhash2(buffer, len, 17);
 	b = FNVHash(buffer, len);
 	printf("query: %d %d\n",a,b);
+	i = 1 & (bloom[a / 8] >> (a % 8));
+	printf("%d\n", i);
 	if( (1 & (bloom[a / 8] >> (a % 8) ) == '1') && (1 & (bloom[b / 8] >> (b % 8) ) ) == '1' ){
 		printf("file might be cached\n");
 		return 1;
