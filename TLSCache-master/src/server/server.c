@@ -14,7 +14,7 @@
 
 #include <tls.h>
 
-char* files[10] = {
+
 
 static void usage()
 {
