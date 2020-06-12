@@ -281,9 +281,9 @@ int main(int argc,  char *argv[])
 				printf("fail to insert\n");
 			}
 
-			for(i = 0; i <20 ; i++){
-				printf("%d",bitVector[i]);
-			}
+// 			for(i = 0; i <20 ; i++){
+// 				printf("%d",bitVector[i]);
+// 			}
 // 			if (bitVector[bloomBit1] && bitVector[bloomBit2]){
 // 				printf("\nfile maybe in cache\n");
 // 			} else {
