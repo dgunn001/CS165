@@ -20,7 +20,7 @@ struct bloom {
 	int bits;
 };
 
-	struct sockaddr_in sockname, client, server_sa;
+	struct sockaddr_in sockname, server_sa;
 	char buffer[80], *ep;
 	size_t maxread;
 	struct sigaction sa;
@@ -142,7 +142,7 @@ static void kidhandler(int signum) {
 }
 
 void *threadFunc(){
-		
+		struct sockaddr_in client;
 		int clientsd;
 		clientlen = sizeof(&client);
 		clientsd = accept(sd, (struct sockaddr *)&client, &clientlen);
