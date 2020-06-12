@@ -14,6 +14,7 @@
 
 #include <tls.h>
 
+int bitVector[20] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 unsigned int murmur_32_scramble(unsigned int k) {
     k *= 0xcc9e2d51;
@@ -87,7 +88,6 @@ static void kidhandler(int signum) {
 int main(int argc,  char *argv[])
 {
 	struct sockaddr_in sockname, client, server_sa;
-	int bitVector[20] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 	char buffer[80], *ep;
 	size_t maxread;
 	struct sigaction sa;
