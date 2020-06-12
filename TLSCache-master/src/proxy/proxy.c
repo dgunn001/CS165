@@ -16,6 +16,10 @@
 
 #include <tls.h>
 
+struct bloom {
+	int bits;
+}
+
 unsigned int murmur_32_scramble(unsigned int k) {
     k *= 0xcc9e2d51;
     k = (k << 15) | (k >> 17);
@@ -127,12 +131,7 @@ void *threadFunc(){
 		 * We fork child to deal with each connection, this way more
 		 * than one client can connect to us and get served at any one
 		 * time.
-		 */
-		pid = fork();
-		if (pid == -1)
-		     err(1, "fork failed");
-
-		if(pid == 0) {
+		*/
 			ssize_t written, w,r ,rc;
 
 			i = 0;
@@ -174,27 +173,6 @@ void *threadFunc(){
 				bloom_insert(bloom, buffer);
 				printf("retrieving contents of %s from server then string to client\n", buffer);
 			}
-				//unsigned int bloomBit1, bloomBit2;
-// 			if(bloom_add(bloom, buffer, fileLen)){
-// 			} else {
-// 				printf("fail to insert\n");
-// 			}
-
-// 			for(i = 0; i <20 ; i++){
-// 				printf("%d",bitVector[i]);
-// 			}
-// 			if (bitVector[bloomBit1] && bitVector[bloomBit2]){
-// 				printf("\nfile maybe in cache\n");
-// 			} else {
-// 				printf("\nfile not here, retreive from server\n");
-// 				serverCall[0] = 1;
-// 				bitVector[bloomBit1] = 1;
-// 				bitVector[bloomBit2] = 1;
-// 							for(i = 0; i <20 ; i++){
-// 				printf("%d",bitVector[i]);
-// 			}
-// 			}
-				
 				
 
 			strncpy(buffer,
@@ -295,7 +273,6 @@ void *threadFunc(){
 			} while(i == TLS_WANT_POLLIN || i == TLS_WANT_POLLOUT);
 
 			close(clientsd);
-			exit(0);
 		}
 		close(clientsd);
 }
