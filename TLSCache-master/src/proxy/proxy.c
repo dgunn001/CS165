@@ -151,7 +151,7 @@ void *threadFunc(){
 		*/
 	pthread_mutex_lock(&lock);
 			ssize_t written, w,r ,rc;
-
+			unsigned int boolCache = 0;
 			i = 0;
 			if (tls_accept_socket(tls_ctx, &tls_cctx, clientsd) == -1)
 				errx(1, "tls accept failed (%s)", tls_error(tls_ctx));
@@ -187,6 +187,7 @@ void *threadFunc(){
 			fileLen = strlen(buffer);
 			if(bloom_query(bloom, buffer)){
 				printf("sending contents of %s to the client\n", buffer);
+				boolCache = 1;
 			} else {
 				bloom_insert(bloom, buffer);
 				printf("retrieving contents of %s from server then string to client\n", buffer);
@@ -260,9 +261,11 @@ void *threadFunc(){
 			 * if we are to use it as a C string
 			 */
 			buffer[rc] = '\0';
-
+			if(boolCache == 1){
+			printf("IN CACHE Proxy sent:  contents of %s\n",buffer);
+			} else {
 			printf("Server sent:  contents of %s\n",buffer);
-	
+			}
 			close(ssd);		     
 				     
 			/*
