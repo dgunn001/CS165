@@ -14,6 +14,21 @@
 
 #include <tls.h>
 
+struct bloom {
+	int entries;
+  double error;
+  int bits;
+  int bytes;
+  int hashes;
+
+  // Fields below are private to the implementation. These may go away or
+  // change incompatibly at any moment. Client code MUST NOT access or rely
+  // on these.
+  double bpe;
+  unsigned char * bf;
+  int ready;
+}
+
 inline static int test_bit_set_bit(unsigned char * buf,
                                    unsigned int x, int set_bit)
 {
