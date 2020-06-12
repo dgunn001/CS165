@@ -105,7 +105,7 @@ int bloom_query (char* bloom, const char* buffer){
 	len = strlen(buffer);
 	a = murmurhash2(buffer, len, 17);
 	b = FNVHash(buffer, len);
-	printf("query: %d %d\n",a,b);
+	printf("Bloom Query Values: %d %d\n",a,b);
 	i = 1 & (bloom[a / 8] >> (a % 8));
 	//printf("%d\n", i);
 	if( (1 & (bloom[a / 8] >> (a % 8) )) && (1 & (bloom[b / 8] >> (b % 8) ) )){
@@ -122,7 +122,7 @@ int bloom_insert (char* bloom, const char* buffer){
 	len = strlen(buffer);
 	a = murmurhash2(buffer, len, 17);
 	b = FNVHash(buffer, len);
-	printf("insert: %d %d\n",a,b);
+	printf("Inserting new Bloom values: %d %d\n",a,b);
 	bloom[a / 8] ^= 1 << (a % 8 );
 	bloom[b / 8] ^= 1 << (b % 8 );
 	i = 1 & (bloom[a / 8] >> (a % 8));
