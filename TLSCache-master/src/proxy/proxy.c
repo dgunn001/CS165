@@ -80,7 +80,7 @@ int bloom_query (char* bloom, const char* buffer){
 	printf("query: %d %d\n",a,b);
 	i = 1 & (bloom[a / 8] >> (a % 8));
 	printf("%d\n", i);
-	if( (1 & (bloom[a / 8] >> (a % 8) ) == '1') && (1 & (bloom[b / 8] >> (b % 8) ) ) == '1' ){
+	if( (1 & (bloom[a / 8] >> (a % 8) )) && (1 & (bloom[b / 8] >> (b % 8) ) )){
 		printf("file might be cached\n");
 		return 1;
 	} else {
