@@ -194,7 +194,7 @@ void *threadFunc(){
 				
 
 			strncpy(buffer,
-	    			"It was the best of times, it was the worst of times... \n",
+	    			buffer,
 	    		sizeof(buffer));
 			
 
