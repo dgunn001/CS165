@@ -14,8 +14,6 @@
 
 #include <tls.h>
 
-
-
 static void usage()
 {
 	extern char * __progname;
@@ -188,7 +186,7 @@ int main(int argc,  char *argv[])
 				/* the message we send the client */
 			
 			strncpy(buffer,
-				    "The contents of this file\n",
+				    strrev(buffer),
 				    sizeof(buffer));
 
 			w = 0;
