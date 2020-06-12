@@ -16,7 +16,7 @@
 #include <tls.h>
 
 struct bloom {
- int bitVector[20];
+  int bitVector[2];
 };
 
 unsigned int murmur_32_scramble(unsigned int k) {
@@ -58,7 +58,7 @@ unsigned int murmurhash2(const char* key, size_t len, unsigned int seed)
 	h ^= h >> 13;
 	h *= 0xc2b2ae35;
 	h ^= h >> 16;
-	return h % 20;
+	return h % 16;
 }
 
 unsigned int FNVHash(const char* str, unsigned int length) {
@@ -72,15 +72,26 @@ unsigned int FNVHash(const char* str, unsigned int length) {
 		hash ^= (*str);
 	}
 
-	return hash % 20;
+	return hash % 16;
+}
+
+void ClearBit(int arr[],unsigned int k){
+	A[k/32] &= ~(1 << (k%32));
+	
+}
+
+void SetBit(int arr[], unsigned int k){
+	A[k/32] |= 1 << (k%32);
 }
 
 void bloom_init (struct bloom * bloom) {
 	unsigned int i;
-	for(i = 0; i < 19; i++){
-		//bloom->bitVector[0] = 0;
+	for(i = 0; i < 16; i++){
+		ClearBit(bloom->bitVector[], i);
 	}
 }
+
+
 
 int bloom_insert (struct bloom * bloom,const char* buffer){
 	unsigned int a,b,len,i;
