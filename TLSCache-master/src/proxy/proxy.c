@@ -144,19 +144,13 @@ static void kidhandler(int signum) {
 }
 
 void *threadFunc(){
-		pthread_mutex_lock(&lock);
-		struct sockaddr_in client;
-		int clientsd;
-		clientlen = sizeof(&client);
-		clientsd = accept(sd, (struct sockaddr *)&client, &clientlen);
-		printf("\n%d\n",t);
-		if (clientsd == -1)
-			err(1, "accept failed");
 		/*
 		 * We fork child to deal with each connection, this way more
 		 * than one client can connect to us and get served at any one
 		 * time.
 		*/
+	pthread_mutex_lock(&lock);
+	printf("\n%d\n",t);
 			ssize_t written, w,r ,rc;
 
 			i = 0;
@@ -409,7 +403,16 @@ int main(int argc,  char *argv[])
 	 */
 	printf("Proxy up and listening for connections on port %u\n", port);
 	
-	for(;;) {
+			
+		struct sockaddr_in client;
+		int clientsd;
+		clientlen = sizeof(&client);
+		
+		
+		if (clientsd == -1)
+			err(1, "accept failed");
+	while(clientsd = accept(sd, (struct sockaddr *)&client, &clientlen)) {
+		printf("connection accepted\n");
 		void *ret;
 		int i;
 		printf("%d\n", i);
