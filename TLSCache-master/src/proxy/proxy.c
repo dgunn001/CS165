@@ -79,7 +79,7 @@ int bloom_query (char* bloom, const char* buffer){
 	b = FNVHash(buffer, len);
 	printf("query: %d %d\n",a,b);
 	i = 1 & (bloom[a / 8] >> (a % 8));
-	printf("%d\n", i);
+	//printf("%d\n", i);
 	if( (1 & (bloom[a / 8] >> (a % 8) )) && (1 & (bloom[b / 8] >> (b % 8) ) )){
 		printf("file might be cached\n");
 		return 1;
@@ -98,7 +98,7 @@ int bloom_insert (char* bloom, const char* buffer){
 	bloom[a / 8] ^= 1 << (a % 8 );
 	bloom[b / 8] ^= 1 << (b % 8 );
 	i = 1 & (bloom[a / 8] >> (a % 8));
-	printf("%d\n", i);
+	//printf("%d\n", i);
 	return 1;
 
 }
