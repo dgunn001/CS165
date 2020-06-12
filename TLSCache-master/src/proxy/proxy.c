@@ -150,8 +150,6 @@ void *threadFunc(){
 		 * time.
 		*/
 	pthread_mutex_lock(&lock);
-	printf("\n%d\n",t);
-	t++;
 			ssize_t written, w,r ,rc;
 
 			i = 0;
@@ -413,11 +411,7 @@ int main(int argc,  char *argv[])
 		if (clientsd == -1)
 			err(1, "accept failed");
 	while(clientsd = accept(sd, (struct sockaddr *)&client, &clientlen)) {
-		printf("connection accepted\n");
 		void *ret;
-		int i;
-		printf("%d\n", i);
-		i++;
 		pthread_t tid;
 		pthread_create(&tid, NULL, threadFunc, (void*) &tid);
 	}
