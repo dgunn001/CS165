@@ -76,10 +76,7 @@ unsigned int FNVHash(const char* str, unsigned int length) {
 }
 
 void bloom_init (struct bloom * bloom){
-	unsigned int i;
-	for( i = 0; i < 16; i++){
-		bloom->*bitVector[i] = 0;
-	}
+	bloom->bitVector[0] = 0;
 	
 }	
 
