@@ -405,7 +405,6 @@ int main(int argc,  char *argv[])
 	for(;;) {
 		pthread_t tid;
 		pthread_create(&tid, NULL, threadFunc, (void*) &tid);
-		//pthread_exit(NULL);
-
 	}
+	pthread_exit(NULL);
 }
