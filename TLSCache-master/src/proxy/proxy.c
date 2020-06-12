@@ -31,7 +31,22 @@ int entries;
 };
 
 
+inline static int test_bit_set_bit(unsigned char * buf,
+                                   unsigned int x, int set_bit)
+{
+  unsigned int byte = x >> 3;
+  unsigned char c = buf[byte];        // expensive memory access
+  unsigned int mask = 1 << (x % 8);
 
+  if (c & mask) {
+    return 1;
+  } else {
+    if (set_bit) {
+      buf[byte] = c | mask;
+    }
+    return 0;
+  }
+}
 
 static int bloom_check_add(struct bloom * bloom,
                            const void * buffer, int len, int add)
@@ -126,7 +141,7 @@ unsigned int murmur_32_scramble(unsigned int k) {
     k *= 0x1b873593;
     return k;
 }
-unsigned int murmur3_32(const char* key, size_t len, unsigned int seed)
+unsigned int murmurhash2(const char* key, size_t len, unsigned int seed)
 {
 	unsigned int h = seed;
     unsigned int k;
@@ -366,7 +381,7 @@ int main(int argc,  char *argv[])
 			//create bloom fliter
 			fileLen = strlen(buffer);
 			//unsigned int bloomBit1, bloomBit2;
-			if(add(bloom, buffer, fileLen)){
+			if(bloom_add(bloom, buffer, fileLen)){
 			} else {
 				printf("fail to insert\n");
 			}
