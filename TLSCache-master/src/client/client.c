@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
 // 	printf("FILENAME: %s\n", filename);
 	printf("PROXY NUM: %d for file %s\n", proxyNum(filename), filename);
 	/* now safe to do this */
-	port = p;
+	proxyNum(filename) = p;
 	//printf(filename);
 	
 	/* set up TLS */
