@@ -261,7 +261,7 @@ void *threadFunc(){
 			 */
 			buffer[rc] = '\0';
 
-			printf("Server sent:  %s",buffer);
+			printf("Server sent:  contents of %s\n",buffer);
 	
 			close(ssd);		     
 				     
