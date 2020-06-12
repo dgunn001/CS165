@@ -61,7 +61,7 @@ unsigned int murmurhash2(const char* key, size_t len, unsigned int seed)
 	return h % 20;
 }
 
-unsigned int FNVHash(char* str, unsigned int length) {
+unsigned int FNVHash(const char* str, unsigned int length) {
 	const unsigned int fnv_prime = 0x811C9DC5;
 	unsigned int hash = 0;
 	unsigned int i = 0;
@@ -83,7 +83,7 @@ void bloom_init (struct bloom * bloom) {
 }
 
 int bloom_insert (struct bloom * bloom,const char* buffer){
-	unsigned int a,b,len,i
+	unsigned int a,b,len,i;
 	len = strlen(buffer);
 	a = murmurhash2(buffer, len, 17);
 	b = FNVHash(buffer, len);
