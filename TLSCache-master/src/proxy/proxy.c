@@ -78,7 +78,7 @@ int bloom_query (char* bloom, const char* buffer){
 	a = murmurhash2(buffer, len, 17);
 	b = FNVHash(buffer, len);
 	printf("query: %d %d\n",a,b);
-	if( (1 & (bloom[a / 8] >> (a % 8) ) ) && (1 & (bloom[b / 8] >> (b % 8) ) ) ){
+	if( (1 & (bloom[a / 8] >> (a % 8) ) == '1') && (1 & (bloom[b / 8] >> (b % 8) ) ) == '1' ){
 		printf("file might be cached\n");
 		return 1;
 	} else {
@@ -292,10 +292,10 @@ int main(int argc,  char *argv[])
 			//create bloom fliter
 			fileLen = strlen(buffer);
 			if(bloom_query(bloom, buffer)){
-				printf("sending contents of %s to the client", buffer);
+				printf("sending contents of %s to the client\n", buffer);
 			} else {
 				bloom_insert(bloom, buffer);
-				printf("retrieving contents of %s from server then string to client", buffer);
+				printf("retrieving contents of %s from server then string to client\n", buffer);
 			}
 				//unsigned int bloomBit1, bloomBit2;
 // 			if(bloom_add(bloom, buffer, fileLen)){
