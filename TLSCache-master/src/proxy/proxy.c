@@ -37,7 +37,7 @@ unsigned int murmur_32_scramble(unsigned int k) {
     k *= 0x1b873593;
     return k;
 }
-unsigned int murmurhash2(char* key, size_t len, unsigned int seed)
+unsigned int murmurhash2(const char* key, size_t len, unsigned int seed)
 {
 	unsigned int h = seed;
     unsigned int k;
