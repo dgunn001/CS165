@@ -17,7 +17,7 @@
 static void usage()
 {
 	extern char * __progname;
-	fprintf(stderr, "usage: %s portnumber\n", __progname);
+	fprintf(stderr, "usage: %s portnumber serverportnumber\n", __progname);
 	exit(1);
 }
 
