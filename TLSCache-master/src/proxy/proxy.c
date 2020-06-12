@@ -27,7 +27,7 @@ unsigned int murmur3_32(const unsigned int* key, size_t len, unsigned int seed)
 	unsigned int h = seed;
     unsigned int k;
     /* Read in groups of 4. */
-	size_t int;
+	size_t i;
     for (i = len >> 2; i; i--) {
         // Here is a source of differing results across endiannesses.
         // A swap here has no effects on hash properties though.
