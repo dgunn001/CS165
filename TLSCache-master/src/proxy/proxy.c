@@ -14,6 +14,22 @@
 
 #include <tls.h>
 
+int bitVector[20] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+unsigned int FNVHash(char* str, unsigned int length) {
+	const unsigned int fnv_prime = 0x811C9DC5;
+	unsigned int hash = 0;
+	unsigned int i = 0;
+
+	for (i = 0; i < length; str++, i++)
+	{
+		hash *= fnv_prime;
+		hash ^= (*str);
+	}
+
+	return hash;
+}
+
 static void usage()
 {
 	extern char * __progname;
@@ -34,6 +50,7 @@ int main(int argc,  char *argv[])
 	size_t maxread;
 	struct sigaction sa;
 	int sd, i, ssd;
+	unsigned int fileLen;
 	socklen_t clientlen;
 	u_short port;
 	u_short serverport;
@@ -196,6 +213,16 @@ int main(int argc,  char *argv[])
 			//client proxy communication testing
 			printf("file found, sending contents of : ");
 			printf(buffer);
+			
+			//create bloom fliter
+			fileLen = strlen(buffer);
+			unsigned int bloomBit1, bloomBit2;
+			bloomBit1 = FNVHASH(buffer, fileLen);
+			bloomBit2 = FNVHASH(buffer, fileLen);
+			
+			
+				
+				
 			printf(" to the client\n");
 			strncpy(buffer,
 	    			"It was the best of times, it was the worst of times... \n",
