@@ -27,7 +27,7 @@ unsigned int FNVHash(char* str, unsigned int length) {
 		hash ^= (*str);
 	}
 
-	return hash;
+	return hash % 20;
 }
 
 static void usage()
@@ -213,17 +213,18 @@ int main(int argc,  char *argv[])
 			//client proxy communication testing
 			printf("file found, sending contents of : ");
 			printf(buffer);
+			printf(" to the client\n");
 			
 			//create bloom fliter
 			fileLen = strlen(buffer);
 			unsigned int bloomBit1, bloomBit2;
 			bloomBit1 = FNVHash(buffer, fileLen);
 			bloomBit2 = FNVHash(buffer, fileLen);
-			
+			printf("Bloom bit locations: %d %d \n", bloomBit1, bloomBit2);
 			
 				
 				
-			printf(" to the client\n");
+
 			strncpy(buffer,
 	    			"It was the best of times, it was the worst of times... \n",
 	    		sizeof(buffer));
