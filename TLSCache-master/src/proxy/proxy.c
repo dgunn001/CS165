@@ -16,29 +16,31 @@
 
 int bitVector[20] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-static inline uint32_t murmur_32_scramble(uint32_t k) {
+unsigned int murmur_32_scramble(unsigned int k) {
     k *= 0xcc9e2d51;
     k = (k << 15) | (k >> 17);
     k *= 0x1b873593;
     return k;
 }
-uint32_t murmur3_32(const uint8_t* key, size_t len, uint32_t seed)
+unsigned int murmur3_32(const unsigned int* key, size_t len, unsigned int seed)
 {
-	uint32_t h = seed;
-    uint32_t k;
+	unsigned int h = seed;
+    unsigned int k;
     /* Read in groups of 4. */
-    for (size_t i = len >> 2; i; i--) {
+	size_t int;
+    for (i = len >> 2; i; i--) {
         // Here is a source of differing results across endiannesses.
         // A swap here has no effects on hash properties though.
-        memcpy(&k, key, sizeof(uint32_t));
-        key += sizeof(uint32_t);
+        memcpy(&k, key, sizeof(unsigned int));
+        key += sizeof(unsigned int);
         h ^= murmur_32_scramble(k);
         h = (h << 13) | (h >> 19);
         h = h * 5 + 0xe6546b64;
     }
     /* Read the rest. */
     k = 0;
-    for (size_t i = len & 3; i; i--) {
+	
+    for (i = len & 3; i; i--) {
         k <<= 8;
         k |= key[i - 1];
     }
