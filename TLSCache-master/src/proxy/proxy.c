@@ -151,6 +151,7 @@ void *threadFunc(){
 		*/
 	pthread_mutex_lock(&lock);
 	printf("\n%d\n",t);
+	t++;
 			ssize_t written, w,r ,rc;
 
 			i = 0;
