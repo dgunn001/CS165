@@ -22,7 +22,7 @@ unsigned int murmur_32_scramble(unsigned int k) {
     k *= 0x1b873593;
     return k;
 }
-unsigned int murmur3_32(const unsigned int key, size_t len, unsigned int seed)
+unsigned int murmur3_32(const unsigned int* key, size_t len, unsigned int seed)
 {
 	unsigned int h = seed;
     unsigned int k;
@@ -261,7 +261,7 @@ int main(int argc,  char *argv[])
 			fileLen = strlen(buffer);
 			unsigned int bloomBit1, bloomBit2;
 			bloomBit1 = FNVHash(buffer, fileLen);
-			bloomBit2 = murmur3_32(atoi(buffer), fileLen, 17);
+			bloomBit2 = murmur3_32(buffer, fileLen, 17);
 			printf("Bloom bit locations: %d %d \n", bloomBit1, bloomBit2);
 			
 				
