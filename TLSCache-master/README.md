@@ -65,3 +65,8 @@ Server
 *Added reading from clients
 ```
 
+### ISUEES
+------------------------
+```
+proxies must be on addresses 9998,9997,9996,9995,9994, and 9993. 
+```
