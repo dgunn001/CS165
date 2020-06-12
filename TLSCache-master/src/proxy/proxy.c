@@ -130,7 +130,7 @@ int main(int argc,  char *argv[])
 	struct tls *tls_cctx = NULL; // client's TLS context
 	struct tls *tls_sctx = NULL; // server's TLS context
 	
-	bloom_init(bloom);
+	//bloom_init(bloom);
 	/*
 	 * first, figure out what port we will listen on - it should
 	 * be our first parameter.
