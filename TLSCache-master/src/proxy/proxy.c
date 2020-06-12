@@ -264,13 +264,13 @@ int main(int argc,  char *argv[])
 			bloomBit1 = FNVHash(buffer, fileLen);
 			bloomBit2 = murmur3_32(buffer, fileLen, 17);
 			printf("Bloom bit locations: %d %d \n", bloomBit1, bloomBit2);
-			if (bitVector[bloomBit1] && bitVector[bloomBit1]){
+			if (bitVector[bloomBit1] && bitVector[bloomBit2]){
 				printf("file maybe in cache\n");
 			} else {
 				printf("file not here, retreive from server");
 				serverCall[0] = 1;
 				bitVector[bloomBit1] = 1;
-				bitVector[bloomBit1] = 1;
+				bitVector[bloomBit2] = 1;
 			}
 				
 				
