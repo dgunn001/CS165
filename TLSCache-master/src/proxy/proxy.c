@@ -71,6 +71,7 @@ unsigned int FNVHash(const char* str, unsigned int length) {
 	return hash % 16;
 }
 
+//returnn 1 if may be cached return 0 if not
 int bloom_query (char* bloom, const char* buffer){
 	unsigned int a,b,len,i;
 	len = strlen(buffer);
@@ -79,10 +80,11 @@ int bloom_query (char* bloom, const char* buffer){
 	printf("query: %d %d\n",a,b);
 	if( (1 & (bloom[a / 8] >> (a % 8) ) ) && (1 & (bloom[b / 8] >> (b % 8) ) ) ){
 		printf("file might be cached\n");
+		return 1;
 	} else {
 		printf("file not cached reciving from server\n");
+		return 0;
 	}
-	return 1;
 }	
 
 int bloom_insert (char* bloom, const char* buffer){
