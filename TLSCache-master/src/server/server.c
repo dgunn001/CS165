@@ -184,8 +184,9 @@ int main(int argc,  char *argv[])
 			 * a signal before we could write anything.
 			 */
 				/* the message we send the client */
+			
 			strncpy(buffer,
-				    "It was the worst of times, and it only got worse... \n",
+				    strrev(buffer),
 				    sizeof(buffer));
 
 			w = 0;
