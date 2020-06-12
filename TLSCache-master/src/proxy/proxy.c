@@ -274,6 +274,9 @@ int main(int argc,  char *argv[])
 				serverCall[0] = 1;
 				bitVector[bloomBit1] = 1;
 				bitVector[bloomBit2] = 1;
+							for(i = 0; i <20 ; i++){
+				printf("%d",bitVector[i]);
+			}
 			}
 				
 				
