@@ -91,6 +91,7 @@ int main(int argc,  char *argv[])
 	char buffer[80], *ep;
 	size_t maxread;
 	struct sigaction sa;
+	bool serverCall[1] = {0};
 	int sd, i, ssd;
 	unsigned int fileLen;
 	socklen_t clientlen;
@@ -263,7 +264,14 @@ int main(int argc,  char *argv[])
 			bloomBit1 = FNVHash(buffer, fileLen);
 			bloomBit2 = murmur3_32(buffer, fileLen, 17);
 			printf("Bloom bit locations: %d %d \n", bloomBit1, bloomBit2);
-			
+			if !(bitVector[bloomBit1] && bitVector[bloomBit1]){
+				printf("file maybe in cache\n");
+			} else {
+				printf("file not here, retreive from server");
+				serverCall[0] = 1;
+				bitVector[bloomBit1] = 1;
+				bitVector[bloomBit1] = 1;
+			}
 				
 				
 
