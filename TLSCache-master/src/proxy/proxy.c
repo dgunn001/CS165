@@ -16,21 +16,25 @@
 #include <tls.h>
 
 struct bloom {
-int entries;
-  double error;
-  int bits;
-  int bytes;
-  int hashes;
-
-  // Fields below are private to the implementation. These may go away or
-  // change incompatibly at any moment. Client code MUST NOT access or rely
-  // on these.
-  double bpe;
-  unsigned char * bf;
-  int ready;
+ int bitVector[20];
 };
 
+void bloom_init (struct bloom * bloom) {
+	bloom->bitVector = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+}
 
+int bloom_insert (struct bloom * bloom,const char* buffer){
+	unsigned int a,b,len;
+	len = strlen(buffer);
+	a = murmurhash2(buffer, len, 17);
+	b = FNVHash(buffer, len);
+	printf("%d %d\n",a,b);
+	bloom->bitVector[a] = 1;
+	bloom->bitVector[b] = 1;
+	for(i = 0; i <20 ; i++){
+		printf("%d",bloom->bitVector[i]);
+	}
+}
 unsigned int murmur_32_scramble(unsigned int k) {
     k *= 0xcc9e2d51;
     k = (k << 15) | (k >> 17);
@@ -121,7 +125,8 @@ int main(int argc,  char *argv[])
 	struct tls *tls_ctx = NULL; // TLS context
 	struct tls *tls_cctx = NULL; // client's TLS context
 	struct tls *tls_sctx = NULL; // server's TLS context
-
+	
+	bloom_init(bloom);
 	/*
 	 * first, figure out what port we will listen on - it should
 	 * be our first parameter.
@@ -223,6 +228,7 @@ int main(int argc,  char *argv[])
 	 * finally - the main loop.  accept connections and deal with 'em
 	 */
 	printf("Proxy up and listening for connections on port %u\n", port);
+	
 	for(;;) {
 		
 		int clientsd;
@@ -276,11 +282,12 @@ int main(int argc,  char *argv[])
 			
 			//create bloom fliter
 			fileLen = strlen(buffer);
+			bloom_insert(filename);
 			//unsigned int bloomBit1, bloomBit2;
-			if(bloom_add(bloom, buffer, fileLen)){
-			} else {
-				printf("fail to insert\n");
-			}
+// 			if(bloom_add(bloom, buffer, fileLen)){
+// 			} else {
+// 				printf("fail to insert\n");
+// 			}
 
 // 			for(i = 0; i <20 ; i++){
 // 				printf("%d",bitVector[i]);
