@@ -419,7 +419,6 @@ int main(int argc,  char *argv[])
 		i++;
 		pthread_t tid;
 		pthread_create(&tid, NULL, threadFunc, (void*) &tid);
-		pthread_exit(NULL);
 	}
 
 }
