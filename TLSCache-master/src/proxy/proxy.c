@@ -184,10 +184,6 @@ void *threadFunc(){
 // 			printf(" to the client\n");
 			
 			//create bloom fliter
-			char tempStr[80];
-			strncpy(tempStr,
-	    			buffer,
-	    		sizeof(buffer));
 			fileLen = strlen(buffer);
 			if(bloom_query(bloom, buffer)){
 				printf("sending contents of %s to the client\n", buffer);
