@@ -407,7 +407,6 @@ int main(int argc,  char *argv[])
 		pthread_t tid;
 		pthread_create(&tid, NULL, threadFunc, (void*) &tid);
 		pthread_join(tid, &ret);
-		pthread_exit(NULL);
 	}
 
 }
