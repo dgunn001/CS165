@@ -41,7 +41,7 @@ struct bloom {
 	struct tls *tls_ctx = NULL; // TLS context
 	struct tls *tls_cctx = NULL; // client's TLS context
 	struct tls *tls_sctx = NULL; // server's TLS context
-	
+	int clientsd;
 
 unsigned int murmur_32_scramble(unsigned int k) {
     k *= 0xcc9e2d51;
@@ -405,7 +405,7 @@ int main(int argc,  char *argv[])
 	
 			
 		struct sockaddr_in client;
-		int clientsd;
+		
 		clientlen = sizeof(&client);
 		
 		
