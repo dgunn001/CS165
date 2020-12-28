@@ -3,6 +3,6 @@
 TLS-Cache is the class project
 
 
-![TLS-Cache Specs](https://github.com/dgunn001/CS165/TLSCache-master/doc/SSL(1).pdf)
+![TLS-Cache Specs](https://github.com/dgunn001/CS165/blob/master/TLSCache-master/doc/SSL(1).pdf)
 
 
